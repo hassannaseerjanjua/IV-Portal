@@ -1,5 +1,5 @@
-import React from 'react';
-import { RotateCcw, Filter, CheckCircle2 } from 'lucide-react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
+import { RotateCcw } from 'lucide-react';
 import { FilterState, PackagingFilter } from '../types';
 
 interface SearchToolbarProps {
@@ -13,6 +13,9 @@ interface SearchToolbarProps {
   totalMatches: number;
   totalDatasetSize: number;
 }
+
+const selectClass =
+  'h-9 pl-3.5 text-[13px] tracking-caption bg-slate-100 hover:bg-slate-200/70 border border-transparent rounded-full text-ink focus:outline-none focus:bg-white focus:border-primary-focus focus:ring-4 focus:ring-primary-focus/15 max-w-full sm:max-w-[220px] truncate cursor-pointer';
 
 export const SearchToolbar: React.FC<SearchToolbarProps> = ({
   filters,
@@ -29,6 +32,23 @@ export const SearchToolbar: React.FC<SearchToolbarProps> = ({
     onFilterChange({ ...filters, packaging: pkg });
   };
 
+  // Measure the selected segment once per change, then move the thumb with transform
+  const trackRef = useRef<HTMLDivElement>(null);
+  const segRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const [thumb, setThumb] = useState({ x: 0, w: 0, ready: false });
+
+  useLayoutEffect(() => {
+    const measure = () => {
+      const el = segRefs.current[filters.packaging];
+      if (!el) return;
+      setThumb((prev) => ({ x: el.offsetLeft, w: el.offsetWidth, ready: prev.w > 0 }));
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (trackRef.current) ro.observe(trackRef.current);
+    return () => ro.disconnect();
+  }, [filters.packaging]);
+
   const hasActiveFilters =
     filters.searchQuery ||
     filters.packaging !== 'all' ||
@@ -38,110 +58,101 @@ export const SearchToolbar: React.FC<SearchToolbarProps> = ({
     filters.size ||
     filters.therapeuticCategory;
 
+  const segments: { id: PackagingFilter; label: string; dot?: string }[] = [
+    { id: 'all', label: `All formulations (${totalDatasetSize})` },
+    { id: 'glass', label: 'Glass bottles (80)', dot: 'bg-[#1f9d55]' },
+    { id: 'plastic', label: 'Plastic BFS (83)', dot: 'bg-[#c77c0e]' },
+  ];
+
   return (
-    <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-xs border border-slate-200/80 space-y-3.5">
-      {/* Packaging Scope Segment Buttons */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
-            <Filter className="w-3.5 h-3.5 text-[#0047ba]" />
-            <span>Packaging Segment:</span>
-          </span>
-        </div>
+    <section aria-label="Filters" className="toolbar bg-white rounded-2xl border border-black/[0.06] p-4 sm:p-5 space-y-4">
+      {/* Packaging segmented control */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+        <div className="text-[14px] font-semibold text-ink tracking-caption">Packaging segment</div>
 
-        <div className="flex flex-wrap items-center gap-2">
-          <button
-            onClick={() => handlePackaging('all')}
-            className={`px-4 py-2 text-xs font-bold rounded-xl transition-all ${
-              filters.packaging === 'all'
-                ? 'bg-[#0047ba] text-white shadow-sm shadow-[#0047ba]/25'
-                : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+        <div
+          ref={trackRef}
+          role="radiogroup"
+          aria-label="Packaging segment"
+          className="relative inline-flex p-1 bg-slate-100 rounded-full overflow-x-auto no-scrollbar max-w-full"
+        >
+          {/* Sliding thumb — glides to the selected segment */}
+          <span
+            aria-hidden="true"
+            data-motion="slide"
+            className={`absolute top-1 bottom-1 left-0 rounded-full bg-white ring-1 ring-black/[0.06] pointer-events-none ${
+              thumb.ready ? 'transition-[transform,width] duration-base ease-in-out' : ''
             }`}
-          >
-            All Formulations ({totalDatasetSize})
-          </button>
-
-          <button
-            onClick={() => handlePackaging('glass')}
-            className={`px-4 py-2 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 ${
-              filters.packaging === 'glass'
-                ? 'bg-emerald-700 text-white shadow-sm'
-                : 'bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-200/60'
-            }`}
-          >
-            <span className="text-sm">🍾</span>
-            <span>Glass Bottles (80)</span>
-          </button>
-
-          <button
-            onClick={() => handlePackaging('plastic')}
-            className={`px-4 py-2 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 ${
-              filters.packaging === 'plastic'
-                ? 'bg-amber-700 text-white shadow-sm'
-                : 'bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200/60'
-            }`}
-          >
-            <span className="text-sm">🧴</span>
-            <span>Plastic BFS (83)</span>
-          </button>
+            style={{ width: thumb.w, transform: `translateX(${thumb.x}px)`, opacity: thumb.w ? 1 : 0 }}
+          />
+          {segments.map((s) => {
+            const active = filters.packaging === s.id;
+            return (
+              <button
+                key={s.id}
+                ref={(el) => (segRefs.current[s.id] = el)}
+                role="radio"
+                aria-checked={active}
+                onClick={() => handlePackaging(s.id)}
+                className={`relative h-8 px-4 rounded-full text-[13px] tracking-caption whitespace-nowrap inline-flex items-center gap-2 ${
+                  active ? 'text-ink font-semibold' : 'text-slate-600 hover:text-ink'
+                }`}
+              >
+                {s.dot && <span className={`size-1.5 rounded-full ${s.dot}`} />}
+                {s.label}
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      {/* Secondary Dropdown Filters */}
-      <div className="flex flex-wrap items-center gap-2.5 pt-3 border-t border-slate-100 text-xs">
-        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider shrink-0">
-          Filter by:
-        </span>
+      {/* Secondary filters */}
+      <div className="flex flex-wrap items-center gap-2 pt-4 border-t border-black/[0.06]">
+        <span className="text-[13px] text-slate-500 mr-1 shrink-0">Filter by</span>
 
-        {/* Molecule dropdown */}
         <select
+          aria-label="Molecule"
           value={filters.molecule}
           onChange={(e) => onFilterChange({ ...filters, molecule: e.target.value })}
-          className="px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0047ba]/30 text-slate-700 font-medium max-w-[190px]"
+          className={selectClass}
         >
-          <option value="">All Molecules ({moleculesList.length})</option>
+          <option value="">All molecules ({moleculesList.length})</option>
           {moleculesList.map((m) => (
-            <option key={m} value={m}>
-              {m}
-            </option>
+            <option key={m} value={m}>{m}</option>
           ))}
         </select>
 
-        {/* Company dropdown */}
         <select
+          aria-label="Company"
           value={filters.company}
           onChange={(e) => onFilterChange({ ...filters, company: e.target.value })}
-          className="px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0047ba]/30 text-slate-700 font-medium max-w-[210px]"
+          className={selectClass}
         >
-          <option value="">All Companies ({companiesList.length})</option>
+          <option value="">All companies ({companiesList.length})</option>
           {companiesList.map((c) => (
-            <option key={c} value={c}>
-              {c}
-            </option>
+            <option key={c} value={c}>{c}</option>
           ))}
         </select>
 
-        {/* Category dropdown */}
         <select
+          aria-label="Therapeutic class"
           value={filters.therapeuticCategory}
           onChange={(e) => onFilterChange({ ...filters, therapeuticCategory: e.target.value })}
-          className="px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0047ba]/30 text-slate-700 font-medium max-w-[180px]"
+          className={selectClass}
         >
-          <option value="">All Therapeutic Classes</option>
+          <option value="">All therapeutic classes</option>
           {categoriesList.map((cat) => (
-            <option key={cat} value={cat}>
-              {cat}
-            </option>
+            <option key={cat} value={cat}>{cat}</option>
           ))}
         </select>
 
-        {/* Pack Size dropdown */}
         <select
+          aria-label="Pack size"
           value={filters.size}
           onChange={(e) => onFilterChange({ ...filters, size: e.target.value })}
-          className="px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0047ba]/30 text-slate-700 font-medium"
+          className={selectClass}
         >
-          <option value="">All Pack Sizes</option>
+          <option value="">All pack sizes</option>
           <option value="100 ml">100 mL (SVP)</option>
           <option value="250 ml">250 mL</option>
           <option value="300 ml">300 mL</option>
@@ -149,47 +160,42 @@ export const SearchToolbar: React.FC<SearchToolbarProps> = ({
           <option value="1000 ml">1000 mL (LVP)</option>
         </select>
 
-        {/* City dropdown */}
         <select
+          aria-label="City"
           value={filters.city}
           onChange={(e) => onFilterChange({ ...filters, city: e.target.value })}
-          className="px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0047ba]/30 text-slate-700 font-medium"
+          className={selectClass}
         >
-          <option value="">All Cities</option>
+          <option value="">All cities</option>
           {citiesList.map((ct) => (
-            <option key={ct} value={ct}>
-              {ct}
-            </option>
+            <option key={ct} value={ct}>{ct}</option>
           ))}
         </select>
 
-        {/* Reset button */}
         {hasActiveFilters && (
           <button
             onClick={onReset}
-            className="text-xs text-[#0047ba] hover:text-[#003894] font-bold flex items-center gap-1 ml-auto transition-colors"
+            className="motion-fade ml-auto h-9 px-3 rounded-full text-[13px] text-primary hover:bg-blue-50 inline-flex items-center gap-1.5"
           >
-            <RotateCcw className="w-3.5 h-3.5" />
-            <span>Reset Filters</span>
+            <RotateCcw className="size-3.5" />
+            Reset filters
           </button>
         )}
       </div>
 
-      {/* Showing count indicator */}
-      <div className="flex items-center justify-between text-xs text-slate-500 px-1 pt-0.5">
-        <div>
-          Showing <span className="font-bold text-slate-900">{totalMatches}</span> of{' '}
-          <span className="font-bold text-slate-900">{totalDatasetSize}</span> products
+      {/* Result count */}
+      <div className="flex items-center justify-between gap-3 text-[13px] text-slate-500">
+        <p className="tabular">
+          Showing <span className="font-semibold text-ink">{totalMatches}</span> of{' '}
+          <span className="font-semibold text-ink">{totalDatasetSize}</span> products
           {filters.searchQuery && (
-            <span className="ml-1 text-[#0047ba] font-semibold">for &quot;{filters.searchQuery}&quot;</span>
+            <span className="text-ink"> for “{filters.searchQuery}”</span>
           )}
-        </div>
+        </p>
         {hasActiveFilters && (
-          <span className="text-[11px] bg-blue-50 text-[#0047ba] px-2.5 py-0.5 rounded-full font-bold border border-blue-200/60">
-            Filtered View Active
-          </span>
+          <span className="motion-fade text-[12px] text-primary bg-blue-50 px-2.5 py-0.5 rounded-full">Filtered</span>
         )}
       </div>
-    </div>
+    </section>
   );
 };

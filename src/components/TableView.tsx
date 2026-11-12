@@ -64,7 +64,7 @@ export const TableView: React.FC<TableViewProps> = ({
     <div className="bg-white rounded-2xl shadow-xs border border-slate-200 overflow-hidden">
       <div className="overflow-x-auto table-container">
         <table className="w-full text-left text-xs text-slate-600 border-collapse">
-          <thead className="bg-slate-100/90 backdrop-blur-xs text-slate-700 uppercase tracking-wider text-[11px] font-semibold border-b border-slate-200">
+          <thead className="bg-slate-100/90 backdrop-blur-xs text-slate-700 text-[11px] font-semibold border-b border-slate-200">
             <tr>
               <th
                 onClick={() => handleSort('sno')}
@@ -157,7 +157,7 @@ export const TableView: React.FC<TableViewProps> = ({
           <tbody className="divide-y divide-slate-100">
             {sortedProducts.length === 0 ? (
               <tr>
-                <td colSpan={10} className="px-6 py-12 text-center text-slate-400 font-medium">
+                <td colSpan={10} className="px-6 py-12 text-center text-slate-400 font-normal">
                   No IV products match your active search and filter criteria. Try resetting filters.
                 </td>
               </tr>
@@ -173,14 +173,14 @@ export const TableView: React.FC<TableViewProps> = ({
                     key={p.sno}
                     className={`${rowBg} hover:bg-blue-50/50 transition-colors group`}
                   >
-                    <td className="px-3 py-3 text-center font-medium text-slate-400">
+                    <td className="px-3 py-3 text-center font-normal text-slate-400">
                       {p.sno}
                     </td>
 
                     <td className="px-4 py-3">
                       <button
                         onClick={() => onFilterByCompany(p.company)}
-                        className="font-bold text-slate-900 hover:text-blue-600 text-left transition-colors"
+                        className="font-semibold text-slate-900 hover:text-blue-600 text-left transition-colors"
                       >
                         {p.company}
                       </button>
@@ -190,11 +190,11 @@ export const TableView: React.FC<TableViewProps> = ({
                       </div>
                     </td>
 
-                    <td className="px-4 py-3 font-bold text-blue-700">
+                    <td className="px-4 py-3 font-semibold text-blue-700">
                       {p.brand}
                     </td>
 
-                    <td className="px-4 py-3 font-medium text-slate-800">
+                    <td className="px-4 py-3 font-normal text-slate-800">
                       {p.generic}
                     </td>
 
@@ -216,7 +216,7 @@ export const TableView: React.FC<TableViewProps> = ({
                       )}
                     </td>
 
-                    <td className="px-4 py-3 font-medium text-slate-700">
+                    <td className="px-4 py-3 font-normal text-slate-700">
                       {p.pack_type}
                     </td>
 
@@ -253,7 +253,7 @@ export const TableView: React.FC<TableViewProps> = ({
                         return (
                           <button
                             onClick={() => onSelectProduct(p)}
-                            className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold border transition-transform hover:scale-105 ${badgeColor}`}
+                            className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold border transition-transform hover:scale-105 ${badgeColor}`}
                             title={`Company Lead: ${p.company} • ${status} (Click to edit in modal)`}
                           >
                             <span className={`w-1.5 h-1.5 rounded-full ${dotColor}`} />

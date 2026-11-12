@@ -71,13 +71,13 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
   return (
     <div className="space-y-6">
       {/* Executive Summary Banner (Solid, no gradient) */}
-      <div className="bg-[#0f172a] rounded-2xl p-6 sm:p-7 text-white border border-slate-800 shadow-sm relative overflow-hidden">
+      <div className="bg-tile-1 rounded-2xl p-6 sm:p-8 text-white relative overflow-hidden">
         <div className="relative z-10 max-w-3xl space-y-2.5">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-blue-300 border border-slate-700">
             <Sparkles className="w-3.5 h-3.5 text-blue-400" />
             <span>Market Intelligence Overview</span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
+          <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-white">
             Pakistani IV Infusion &amp; Packaging Breakdown
           </h2>
           <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
@@ -93,7 +93,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
         <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs space-y-5">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
                 <PieChart className="w-4 h-4 text-blue-600" />
                 <span>Container Technology Ratio</span>
               </h3>
@@ -122,9 +122,8 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
             <div className="grid grid-cols-2 gap-3.5 mt-4 pt-3 border-t border-slate-100">
               <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
                 <div className="flex items-center gap-2">
-                  <span className="text-lg">🍾</span>
                   <div>
-                    <div className="text-lg font-bold text-slate-900">{glass} ({glassPct}%)</div>
+                    <div className="text-lg font-semibold text-slate-900">{glass} ({glassPct}%)</div>
                     <div className="text-xs font-semibold text-emerald-800">Type II Glass Bottles</div>
                   </div>
                 </div>
@@ -135,9 +134,8 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
 
               <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
                 <div className="flex items-center gap-2">
-                  <span className="text-lg">🧴</span>
                   <div>
-                    <div className="text-lg font-bold text-slate-900">{plastic} ({plasticPct}%)</div>
+                    <div className="text-lg font-semibold text-slate-900">{plastic} ({plasticPct}%)</div>
                     <div className="text-xs font-semibold text-amber-800">Plastic BFS Bottles</div>
                   </div>
                 </div>
@@ -153,7 +151,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
         <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
                 <TrendingUp className="w-4 h-4 text-blue-600" />
                 <span>Therapeutic Class Distribution</span>
               </h3>
@@ -167,7 +165,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
 
               return (
                 <div key={category} className="space-y-1">
-                  <div className="flex items-center justify-between text-xs font-medium">
+                  <div className="flex items-center justify-between text-xs font-normal">
                     <span className="text-slate-800 font-semibold">{category}</span>
                     <span className="text-slate-500 font-mono">
                       {stats.count} ({pct}%)
@@ -186,8 +184,8 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                     />
                   </div>
                   <div className="flex items-center justify-between text-[10px] text-slate-500">
-                    <span className="text-emerald-800 font-medium">{stats.glass} in Glass</span>
-                    <span className="text-amber-800 font-medium">{stats.plastic} in Plastic BFS</span>
+                    <span className="text-emerald-800 font-normal">{stats.glass} in Glass</span>
+                    <span className="text-amber-800 font-normal">{stats.plastic} in Plastic BFS</span>
                   </div>
                 </div>
               );
@@ -201,11 +199,11 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
         {/* Card 3: Pack Size Analysis */}
         <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+            <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
               <Package className="w-4 h-4 text-blue-600" />
               <span>Pack Volume Segmentation</span>
             </h3>
-            <span className="text-xs text-slate-400 font-medium">SVP vs. LVP</span>
+            <span className="text-xs text-slate-400 font-normal">SVP vs. LVP</span>
           </div>
 
           <div className="space-y-2.5">
@@ -216,11 +214,11 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                 return (
                   <div key={sizeLabel} className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
                     <div>
-                      <div className="text-xs font-bold text-slate-900">{sizeLabel}</div>
+                      <div className="text-xs font-semibold text-slate-900">{sizeLabel}</div>
                       <div className="text-[11px] text-slate-500 mt-0.5">{pct}% of Pakistani IV portfolio</div>
                     </div>
                     <div className="text-right">
-                      <div className="text-base font-bold text-slate-900">{count}</div>
+                      <div className="text-base font-semibold text-slate-900">{count}</div>
                       <div className="text-[10px] text-slate-400 uppercase font-semibold">Formulations</div>
                     </div>
                   </div>
@@ -232,11 +230,11 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
         {/* Card 4: Regional Manufacturing Clusters */}
         <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+            <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
               <MapPin className="w-4 h-4 text-slate-700" />
               <span>Regional Manufacturing Hubs</span>
             </h3>
-            <span className="text-xs text-slate-400 font-medium">Clusters</span>
+            <span className="text-xs text-slate-400 font-normal">Clusters</span>
           </div>
 
           <div className="space-y-2.5">
@@ -247,11 +245,11 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                 return (
                   <div key={hub} className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
                     <div>
-                      <div className="text-xs font-bold text-slate-900">{hub}</div>
+                      <div className="text-xs font-semibold text-slate-900">{hub}</div>
                       <div className="text-[11px] text-slate-500 mt-0.5">{pct}% of manufacturing activity</div>
                     </div>
                     <div className="text-right">
-                      <div className="text-base font-bold text-slate-900">{count}</div>
+                      <div className="text-base font-semibold text-slate-900">{count}</div>
                       <div className="text-[10px] text-slate-400 uppercase font-semibold">Products</div>
                     </div>
                   </div>
@@ -265,7 +263,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
       <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+            <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
               <Factory className="w-4 h-4 text-blue-600" />
               <span>Top 10 IV Manufacturers by Audited Product Range</span>
             </h3>
@@ -275,7 +273,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs text-slate-600">
-            <thead className="bg-slate-50 uppercase text-[10px] font-bold text-slate-500 border-b border-slate-200">
+            <thead className="bg-slate-50 uppercase text-[10px] font-semibold text-slate-500 border-b border-slate-200">
               <tr>
                 <th className="py-2.5 px-3">Rank</th>
                 <th className="py-2.5 px-3">Manufacturer</th>
@@ -286,13 +284,13 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                 <th className="py-2.5 px-3 text-center">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 font-medium">
+            <tbody className="divide-y divide-slate-100 font-normal">
               {top10Companies.map((c, i) => (
                 <tr key={c.name} className="hover:bg-slate-50 transition-colors">
-                  <td className="py-2.5 px-3 font-mono font-bold text-slate-400">#{i + 1}</td>
-                  <td className="py-2.5 px-3 font-bold text-slate-900">{c.name}</td>
+                  <td className="py-2.5 px-3 font-mono font-semibold text-slate-400">#{i + 1}</td>
+                  <td className="py-2.5 px-3 font-semibold text-slate-900">{c.name}</td>
                   <td className="py-2.5 px-3 text-slate-500">{c.city}</td>
-                  <td className="py-2.5 px-3 text-center font-bold text-blue-700">{c.totalProducts}</td>
+                  <td className="py-2.5 px-3 text-center font-semibold text-blue-700">{c.totalProducts}</td>
                   <td className="py-2.5 px-3 text-center">
                     {c.glassCount > 0 ? (
                       <span className="font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">

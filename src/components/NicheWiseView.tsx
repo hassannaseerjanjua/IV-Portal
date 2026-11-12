@@ -1,6 +1,24 @@
 import React, { useState } from 'react';
 import { IVProduct, NicheGroup } from '../types';
-import { Sparkles, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Sparkles, Wine, Droplet, Pill, Syringe, Waves, TestTube, Package, Factory, Landmark, Mountain, Layers } from 'lucide-react';
+
+const NICHE_ICONS: Record<string, React.ElementType> = {
+  'glass-hanger': Wine,
+  'plastic-bfs': Droplet,
+  antibiotics: Pill,
+  analgesics: Syringe,
+  'lvp-fluids': Waves,
+  'svp-100ml': TestTube,
+  'lvp-500ml': Package,
+  'hub-karachi': Factory,
+  'hub-lahore': Landmark,
+  'hub-kpk': Mountain,
+};
+
+const NicheIcon: React.FC<{ id: string; className?: string }> = ({ id, className }) => {
+  const Icon = NICHE_ICONS[id] ?? Layers;
+  return <Icon className={className} strokeWidth={1.75} aria-hidden="true" />;
+};
 
 interface NicheWiseViewProps {
   niches: NicheGroup[];
@@ -44,7 +62,7 @@ export const NicheWiseView: React.FC<NicheWiseViewProps> = ({
               setActiveCategoryFilter(c.id);
               setSelectedNicheId(null);
             }}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${activeCategoryFilter === c.id
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition ${activeCategoryFilter === c.id
                 ? 'bg-blue-600 text-white shadow-xs'
                 : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
               }`}
@@ -63,22 +81,20 @@ export const NicheWiseView: React.FC<NicheWiseViewProps> = ({
             <div
               key={niche.id}
               onClick={() => setSelectedNicheId(isSelected ? null : niche.id)}
-              className={`bg-white rounded-2xl p-5 border transition-all cursor-pointer flex flex-col justify-between hover:shadow-md ${isSelected
+              className={`bg-white rounded-2xl p-5 border transition cursor-pointer flex flex-col justify-between hover:shadow-md ${isSelected
                   ? 'border-blue-600 ring-2 ring-blue-500/20 shadow-md'
                   : 'border-slate-200 hover:border-blue-300'
                 }`}
             >
               <div>
                 <div className="flex items-start justify-between gap-3">
-                  <div className="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-2xl shadow-xs">
-                    {niche.icon}
-                  </div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
+                  <div className="size-11 rounded-xl bg-slate-100 text-ink flex items-center justify-center"><NicheIcon id={niche.id} className="size-5" /></div>
+                  <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
                     {niche.badge}
                   </span>
                 </div>
 
-                <h3 className="text-base font-bold text-slate-900 mt-3.5">
+                <h3 className="text-base font-semibold text-slate-900 mt-3.5">
                   {niche.title}
                 </h3>
                 <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">
@@ -89,12 +105,12 @@ export const NicheWiseView: React.FC<NicheWiseViewProps> = ({
               <div className="mt-5 pt-3.5 border-t border-slate-100">
                 <div className="grid grid-cols-2 gap-2 text-center py-1 bg-slate-50 rounded-xl mb-3">
                   <div>
-                    <div className="text-base font-extrabold text-slate-900">{niche.productCount}</div>
-                    <div className="text-[10px] text-slate-400 font-medium uppercase">Products</div>
+                    <div className="text-base font-semibold text-slate-900">{niche.productCount}</div>
+                    <div className="text-[10px] text-slate-400 font-normal uppercase">Products</div>
                   </div>
                   <div>
-                    <div className="text-base font-extrabold text-blue-700">{niche.companyCount}</div>
-                    <div className="text-[10px] text-slate-400 font-medium uppercase">Companies</div>
+                    <div className="text-base font-semibold text-blue-700">{niche.companyCount}</div>
+                    <div className="text-[10px] text-slate-400 font-normal uppercase">Companies</div>
                   </div>
                 </div>
 
@@ -112,12 +128,12 @@ export const NicheWiseView: React.FC<NicheWiseViewProps> = ({
 
       {/* Expanded Niche Product Explorer */}
       {activeSelectedNiche && (
-        <div className="bg-white rounded-2xl p-5 border-2 border-blue-500/30 shadow-md space-y-4">
+        <div key={activeSelectedNiche.id} className="motion-rise bg-white rounded-2xl p-5 border-2 border-blue-500/30 shadow-md space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-2xl">{activeSelectedNiche.icon}</span>
-                <h3 className="text-lg font-bold text-slate-900">
+                <NicheIcon id={activeSelectedNiche.id} className="size-5 text-ink" />
+                <h3 className="text-lg font-semibold text-slate-900">
                   {activeSelectedNiche.title}
                 </h3>
                 <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700">
@@ -143,20 +159,20 @@ export const NicheWiseView: React.FC<NicheWiseViewProps> = ({
               <div
                 key={p.sno}
                 onClick={() => onSelectProduct(p)}
-                className="p-3 rounded-xl border border-slate-200 hover:border-blue-400 bg-slate-50/50 hover:bg-white cursor-pointer transition-all flex flex-col justify-between"
+                className="p-3 rounded-xl border border-slate-200 hover:border-blue-400 bg-slate-50/50 hover:bg-white cursor-pointer transition flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center justify-between gap-1">
-                    <span className="text-xs font-bold text-slate-900">{p.company}</span>
-                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${p.is_glass ? 'badge-glass' : 'badge-plastic'}`}>
-                      {p.is_glass ? '🍾 Glass' : '🧴 BFS'}
+                    <span className="text-xs font-semibold text-slate-900">{p.company}</span>
+                    <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded ${p.is_glass ? 'badge-glass' : 'badge-plastic'}`}>
+                      {p.is_glass ? 'Glass' : 'BFS'}
                     </span>
                   </div>
                   <div className="text-xs font-semibold text-blue-700 mt-1">{p.brand}</div>
                   <div className="text-[11px] text-slate-600 mt-0.5 line-clamp-1">{p.generic}</div>
                 </div>
 
-                <div className="mt-2 pt-2 border-t border-slate-200/60 flex items-center justify-between text-[10px] text-slate-400 font-medium">
+                <div className="mt-2 pt-2 border-t border-slate-200/60 flex items-center justify-between text-[10px] text-slate-400 font-normal">
                   <span>Size: {p.size}</span>
                   <span className="text-blue-600 font-semibold">Inspect Spec →</span>
                 </div>
