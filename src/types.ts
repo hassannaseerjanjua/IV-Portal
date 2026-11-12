@@ -17,7 +17,7 @@ export interface IVProduct {
   image_link: string;
 }
 
-export type ViewTab = 'products' | 'niches' | 'companies' | 'table' | 'analytics' | 'pipeline';
+export type ViewTab = 'products' | 'niches' | 'companies' | 'table' | 'leads' | 'analytics' | 'pipeline';
 
 export type PackagingFilter = 'all' | 'glass' | 'plastic';
 
@@ -69,6 +69,23 @@ export interface NicheGroup {
   products: IVProduct[];
 }
 
+export interface CompanyLead {
+  companyName: string;
+  status: 'Not Contacted' | 'In Discussion' | 'Sample Sent' | 'Existing Client' | 'Not Interested';
+  contactPerson?: string;
+  title?: string;
+  phone?: string;
+  email?: string;
+  linkedin?: string;
+  notes?: string;
+  city?: string;
+  updatedAt?: string;
+  totalProducts?: number;
+  glassCount?: number;
+  plasticCount?: number;
+  brands?: string[];
+}
+
 export interface OutreachRecord {
   sno: number;
   status: 'Not Contacted' | 'In Discussion' | 'Sample Sent' | 'Existing Client' | 'Not Interested';
@@ -77,6 +94,11 @@ export interface OutreachRecord {
   email?: string;
   notes?: string;
   updatedAt?: string;
+  company?: string;
+  brand?: string;
+  generic?: string;
+  size?: string;
+  is_glass?: boolean;
 }
 
 export interface CompanyContact {

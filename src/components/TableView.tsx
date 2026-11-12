@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { IVProduct } from '../types';
-import { ArrowUpDown, ArrowUp, ArrowDown, ExternalLink, Image, MapPin, Eye } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { IVProduct, CompanyLead } from '../types';
+import { ArrowUpDown, ArrowUp, ArrowDown, ExternalLink, Image, MapPin, Eye, Building2 } from 'lucide-react';
+import { getStoredCompanyLeads, subscribeToCompanyLeadUpdates } from '../utils/crmStorage';
 
 interface TableViewProps {
   products: IVProduct[];
@@ -17,6 +18,15 @@ export const TableView: React.FC<TableViewProps> = ({
 }) => {
   const [sortCol, setSortCol] = useState<SortCol>('sno');
   const [sortAsc, setSortAsc] = useState<boolean>(true);
+  const [companyLeads, setCompanyLeads] = useState<Record<string, CompanyLead>>({});
+
+  useEffect(() => {
+    setCompanyLeads(getStoredCompanyLeads());
+    const unsubscribe = subscribeToCompanyLeadUpdates(() => {
+      setCompanyLeads(getStoredCompanyLeads());
+    });
+    return unsubscribe;
+  }, []);
 
   const handleSort = (col: SortCol) => {
     if (sortCol === col) {
@@ -111,7 +121,7 @@ export const TableView: React.FC<TableViewProps> = ({
                 className="px-4 py-3.5 cursor-pointer hover:bg-slate-200 transition-colors w-36 text-center group"
               >
                 <div className="flex items-center justify-center">
-                  <span>Glass Bottle?</span>
+                  <span>Bottle</span>
                   <SortIndicator col="is_glass" />
                 </div>
               </th>
@@ -124,6 +134,10 @@ export const TableView: React.FC<TableViewProps> = ({
                   <span>Packaging Technology</span>
                   <SortIndicator col="pack_type" />
                 </div>
+              </th>
+
+              <th className="px-4 py-3.5 w-36 text-center">
+                Lead / Outreach
               </th>
 
               {/* <th className="px-4 py-3.5 min-w-[260px]">
@@ -204,6 +218,49 @@ export const TableView: React.FC<TableViewProps> = ({
 
                     <td className="px-4 py-3 font-medium text-slate-700">
                       {p.pack_type}
+                    </td>
+
+                    <td className="px-4 py-3 text-center">
+                      {(() => {
+                        const lead = companyLeads[p.company];
+                        const status = lead?.status || (p.orig_status === 'EXISTING CLIENT' || p.company.includes('Bosch') ? 'Existing Client' : null);
+                        if (!status || status === 'Not Contacted') {
+                          return (
+                            <button
+                              onClick={() => onSelectProduct(p)}
+                              className="text-[11px] font-semibold text-slate-400 hover:text-blue-600 hover:bg-blue-50 px-2 py-0.5 rounded-lg transition-colors"
+                              title={`Create lead for ${p.company}`}
+                            >
+                              + Add Lead
+                            </button>
+                          );
+                        }
+                        let badgeColor = 'bg-slate-100 text-slate-700 border-slate-200';
+                        let dotColor = 'bg-slate-400';
+                        if (status === 'Existing Client') {
+                          badgeColor = 'bg-emerald-50 text-emerald-700 border-emerald-200';
+                          dotColor = 'bg-emerald-500';
+                        } else if (status === 'In Discussion') {
+                          badgeColor = 'bg-blue-50 text-blue-700 border-blue-200';
+                          dotColor = 'bg-blue-600';
+                        } else if (status === 'Sample Sent') {
+                          badgeColor = 'bg-amber-50 text-amber-700 border-amber-200';
+                          dotColor = 'bg-amber-500';
+                        } else if (status === 'Not Interested') {
+                          badgeColor = 'bg-rose-50 text-rose-700 border-rose-200';
+                          dotColor = 'bg-rose-500';
+                        }
+                        return (
+                          <button
+                            onClick={() => onSelectProduct(p)}
+                            className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold border transition-transform hover:scale-105 ${badgeColor}`}
+                            title={`Company Lead: ${p.company} • ${status} (Click to edit in modal)`}
+                          >
+                            <span className={`w-1.5 h-1.5 rounded-full ${dotColor}`} />
+                            <span>{status}</span>
+                          </button>
+                        );
+                      })()}
                     </td>
 
                     {/* <td className="px-4 py-3 text-slate-600 text-[11px] leading-relaxed max-w-sm">

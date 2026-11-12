@@ -53,6 +53,8 @@ export const Header: React.FC<HeaderProps> = ({
         return 'Companies Directory';
       case 'table':
         return 'Master Catalog Table';
+      case 'leads':
+        return 'Leads & Outreach CRM';
       case 'analytics':
         return 'Analytics & Market Overview';
       default:

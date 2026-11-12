@@ -44,11 +44,10 @@ export const NicheWiseView: React.FC<NicheWiseViewProps> = ({
               setActiveCategoryFilter(c.id);
               setSelectedNicheId(null);
             }}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-              activeCategoryFilter === c.id
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${activeCategoryFilter === c.id
                 ? 'bg-blue-600 text-white shadow-xs'
                 : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
-            }`}
+              }`}
           >
             {c.label}
           </button>
@@ -64,11 +63,10 @@ export const NicheWiseView: React.FC<NicheWiseViewProps> = ({
             <div
               key={niche.id}
               onClick={() => setSelectedNicheId(isSelected ? null : niche.id)}
-              className={`bg-white rounded-2xl p-5 border transition-all cursor-pointer flex flex-col justify-between hover:shadow-md ${
-                isSelected
+              className={`bg-white rounded-2xl p-5 border transition-all cursor-pointer flex flex-col justify-between hover:shadow-md ${isSelected
                   ? 'border-blue-600 ring-2 ring-blue-500/20 shadow-md'
                   : 'border-slate-200 hover:border-blue-300'
-              }`}
+                }`}
             >
               <div>
                 <div className="flex items-start justify-between gap-3">
@@ -100,12 +98,12 @@ export const NicheWiseView: React.FC<NicheWiseViewProps> = ({
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between text-xs font-semibold">
+                {/* <div className="flex items-center justify-between text-xs font-semibold">
                   <span className={isSelected ? 'text-blue-600' : 'text-slate-600'}>
                     {isSelected ? 'Viewing Products Below ↓' : 'Click to Inspect Products'}
                   </span>
                   <ArrowRight className={`w-3.5 h-3.5 transition-transform ${isSelected ? 'rotate-90 text-blue-600' : 'text-slate-400'}`} />
-                </div>
+                </div> */}
               </div>
             </div>
           );

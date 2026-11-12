@@ -17,7 +17,12 @@ import {
   PackageCheck
 } from 'lucide-react';
 import { getMoleculeGroup, getTherapeuticCategory } from '../utils/portalHelpers';
-import { getStoredOutreachRecords, saveOutreachRecord, formatProductForClipboard } from '../utils/crmStorage';
+import {
+  getCompanyLead,
+  saveCompanyLead,
+  subscribeToCompanyLeadUpdates,
+  formatProductForClipboard
+} from '../utils/crmStorage';
 
 interface ProductDetailModalProps {
   product: IVProduct | null;
@@ -42,8 +47,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
   useEffect(() => {
     if (!product) return;
-    const records = getStoredOutreachRecords();
-    const existing = records[product.sno];
+    const existing = getCompanyLead(product.company);
     if (existing) {
       setOutreachStatus(existing.status);
       setContactPerson(existing.contactPerson || '');
@@ -57,6 +61,22 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
       setEmail('');
       setNotes('');
     }
+  }, [product]);
+
+  // Keep modal in live sync if company lead is updated in the separate Leads screen
+  useEffect(() => {
+    if (!product) return;
+    const unsubscribe = subscribeToCompanyLeadUpdates(() => {
+      const existing = getCompanyLead(product.company);
+      if (existing) {
+        setOutreachStatus(existing.status);
+        setContactPerson(existing.contactPerson || '');
+        setPhone(existing.phone || '');
+        setEmail(existing.email || '');
+        setNotes(existing.notes || '');
+      }
+    });
+    return unsubscribe;
   }, [product]);
 
   // Keyboard escape listener
@@ -84,12 +104,14 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   };
 
   const handleSaveOutreach = () => {
-    saveOutreachRecord(product.sno, {
+    saveCompanyLead(product.company, {
+      companyName: product.company,
       status: outreachStatus,
       contactPerson,
       phone,
       email,
-      notes
+      notes,
+      city: product.city
     });
     setIsSaved(true);
     if (onOutreachUpdated) onOutreachUpdated();
@@ -233,9 +255,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
                 <User className="w-3.5 h-3.5 text-[#0047ba]" />
-                <span>Hanger Label Lead &amp; Outreach Status:</span>
+                <span>Company Lead &amp; Outreach ({product.company}):</span>
               </span>
-              <span className="text-[10px] text-slate-400 font-mono">Local Storage Saved</span>
+              <span className="text-[10px] text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full font-bold">
+                Company CRM Sync
+              </span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

@@ -19,8 +19,10 @@ import { NicheWiseView } from './components/NicheWiseView';
 import { CompanyDirectoryView } from './components/CompanyDirectoryView';
 import { TableView } from './components/TableView';
 import { AnalyticsView } from './components/AnalyticsView';
+import { LeadsView } from './components/LeadsView';
 import { ProductDetailModal } from './components/ProductDetailModal';
 import { CompanyDetailModal } from './components/CompanyDetailModal';
+import { getStoredCompanyLeads, subscribeToCompanyLeadUpdates } from './utils/crmStorage';
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ViewTab>('products');
@@ -39,6 +41,19 @@ export const App: React.FC = () => {
 
   const [selectedProduct, setSelectedProduct] = useState<IVProduct | null>(null);
   const [selectedCompany, setSelectedCompany] = useState<CompanySummary | null>(null);
+
+  // Live tracked company leads count
+  const [leadsCount, setLeadsCount] = useState<number>(() => {
+    return Object.keys(getStoredCompanyLeads()).length;
+  });
+
+  React.useEffect(() => {
+    const updateCount = () => {
+      setLeadsCount(Object.keys(getStoredCompanyLeads()).length);
+    };
+    const unsubscribe = subscribeToCompanyLeadUpdates(updateCount);
+    return unsubscribe;
+  }, []);
 
   // Lists for dropdown options
   const companiesList = useMemo(() => {
@@ -156,6 +171,7 @@ export const App: React.FC = () => {
           companiesCount={totalCompaniesCount}
           nichesCount={allNiches.length}
           moleculesCount={totalMoleculesCount}
+          leadsCount={leadsCount}
           filteredProducts={filteredProducts}
           isOpenMobile={isMobileMenuOpen}
           onCloseMobile={() => setIsMobileMenuOpen(false)}
@@ -193,17 +209,19 @@ export const App: React.FC = () => {
             /> */}
 
             {/* Filter Toolbar with Clean White Segment Buttons */}
-            <SearchToolbar
-              filters={filters}
-              onFilterChange={setFilters}
-              onReset={handleResetFilters}
-              companiesList={companiesList}
-              moleculesList={moleculesList}
-              citiesList={citiesList}
-              categoriesList={categoriesList}
-              totalMatches={filteredProducts.length}
-              totalDatasetSize={totalProducts}
-            />
+            {activeTab !== 'leads' && activeTab !== 'analytics' && (
+              <SearchToolbar
+                filters={filters}
+                onFilterChange={setFilters}
+                onReset={handleResetFilters}
+                companiesList={companiesList}
+                moleculesList={moleculesList}
+                citiesList={citiesList}
+                categoriesList={categoriesList}
+                totalMatches={filteredProducts.length}
+                totalDatasetSize={totalProducts}
+              />
+            )}
 
             {/* Active View */}
             <main>
@@ -239,6 +257,14 @@ export const App: React.FC = () => {
                 />
               )}
 
+              {activeTab === 'leads' && (
+                <LeadsView
+                  companies={allCompanies}
+                  onSelectCompany={setSelectedCompany}
+                  onFilterByCompany={handleFilterByCompany}
+                />
+              )}
+
               {activeTab === 'analytics' && (
                 <AnalyticsView
                   products={PRODUCTS}
@@ -264,6 +290,7 @@ export const App: React.FC = () => {
         product={selectedProduct}
         onClose={() => setSelectedProduct(null)}
         onFilterByCompany={handleFilterByCompany}
+        onOutreachUpdated={() => setLeadsCount(Object.keys(getStoredOutreachRecords()).length)}
       />
 
       {/* Company Detail Modal */}

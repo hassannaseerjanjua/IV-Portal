@@ -7,12 +7,10 @@ import {
   Building2,
   TableProperties,
   BarChart3,
+  UserCheck,
   X,
   ChevronLeft,
   ChevronRight,
-  ShieldCheck,
-  Download,
-  Printer
 } from 'lucide-react';
 import { exportToCSV } from '../utils/searchEngine';
 import { IVProduct } from '../types';
@@ -24,6 +22,7 @@ interface SidebarProps {
   companiesCount: number;
   nichesCount: number;
   moleculesCount: number;
+  leadsCount?: number;
   filteredProducts: IVProduct[];
   isOpenMobile: boolean;
   onCloseMobile: () => void;
@@ -38,6 +37,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   companiesCount,
   nichesCount,
   moleculesCount,
+  leadsCount,
   filteredProducts,
   isOpenMobile,
   onCloseMobile,
@@ -69,6 +69,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
       label: 'Master Table',
       icon: TableProperties,
       count: productsCount,
+    },
+    {
+      id: 'leads' as ViewTab,
+      label: 'Leads & CRM',
+      icon: UserCheck,
+      count: leadsCount ?? null,
     },
     {
       id: 'analytics' as ViewTab,
@@ -179,32 +185,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         {/* Bottom Section with Export Actions and Geometric Brand Decal */}
         <div style={{ height: '-webkit-fill-available' }} className="relative overflow-hidden pt-4 pb-3 px-3.5 border-t border-slate-100 bg-white">
-          {/* <div className="space-y-2 relative z-10">
-            <button
-              onClick={() => exportToCSV(filteredProducts, `Pak_IV_Filtered_${filteredProducts.length}.csv`)}
-              title={isCollapsed ? 'Export Filtered CSV' : undefined}
-              className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-semibold rounded-xl bg-slate-900 hover:bg-slate-800 text-white transition-colors"
-            >
-              <Download className="w-3.5 h-3.5 shrink-0" />
-              {!isCollapsed && <span>Export CSV ({filteredProducts.length})</span>}
-            </button>
-
-            <button
-              onClick={() => window.print()}
-              title={isCollapsed ? 'Print / PDF' : undefined}
-              className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-semibold rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
-            >
-              <Printer className="w-3.5 h-3.5 shrink-0" />
-              {!isCollapsed && <span>Print Report</span>}
-            </button>
-
-            {!isCollapsed && (
-              <div className="pt-2 text-[10px] text-slate-400 font-medium flex items-center justify-center gap-1">
-                <ShieldCheck className="w-3 h-3 text-emerald-600" />
-                <span>DRAP Verified Audit</span>
-              </div>
-            )}
-          </div> */}
 
           {/* Reference Image Signature: Bottom-left amber/orange decorative geometric stripes */}
           <div className="absolute -bottom-6 -left-6 pointer-events-none opacity-90">

@@ -106,7 +106,7 @@ export const CompanyDetailModal: React.FC<CompanyDetailModalProps> = ({
   /* ── render ── */
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-5">
-      <div className="bg-white rounded-3xl max-w-4xl w-full shadow-2xl border border-slate-200/90 overflow-hidden animate-in fade-in zoom-in-95 duration-150 flex flex-col max-h-[92vh]">
+      <div className="bg-white rounded-3xl max-w-4xl w-full shadow-2xl border border-slate-200/90 overflow-hidden animate-in fade-in zoom-in-95 duration-150 flex flex-col max-h-[92vh] overflow-y-auto">
 
         {/* Top Amber Accent Bar */}
         <div className="h-1.5 bg-[#f59e0b] w-full shrink-0" />
@@ -376,7 +376,7 @@ export const CompanyDetailModal: React.FC<CompanyDetailModalProps> = ({
         </div>
 
         {/* ── Scrollable Portfolio List ── */}
-        <div className="p-5 sm:p-7 overflow-y-auto space-y-4 flex-1 bg-[#f4f6fa]/60">
+        <div className="p-5 sm:p-7 space-y-4 flex-1 bg-[#f4f6fa]/60">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800">
