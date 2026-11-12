@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Search, Bell, Plus, Menu, Calendar, ShieldCheck, Printer, Download } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Search, Bell, Menu, Download } from 'lucide-react';
 import { ViewTab } from '../types';
 
 interface HeaderProps {
@@ -12,110 +12,125 @@ interface HeaderProps {
   totalCount: number;
 }
 
+const TAB_LABELS: Partial<Record<ViewTab, string>> = {
+  products: 'Product-wise Companies',
+  niches: 'Niche-wise Markets',
+  companies: 'Companies Directory',
+  table: 'Master Catalog',
+  leads: 'Leads & Outreach',
+  analytics: 'Market Overview',
+};
+
+const formatNow = () =>
+  new Date().toLocaleDateString('en-US', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  });
+
 export const Header: React.FC<HeaderProps> = ({
   searchQuery,
   onSearchChange,
   activeTab,
   onOpenMobileMenu,
   onExportClick,
-  filteredCount,
-  totalCount,
 }) => {
-  const [currentDateTime, setCurrentDateTime] = useState('');
+  const [now, setNow] = useState(formatNow);
+  const [scrolled, setScrolled] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      const options: Intl.DateTimeFormatOptions = {
-        weekday: 'long',
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
-      };
-      setCurrentDateTime(now.toLocaleDateString('en-US', options));
-    };
-
-    updateTime();
-    const interval = setInterval(updateTime, 60000);
+    const interval = setInterval(() => setNow(formatNow()), 60000);
     return () => clearInterval(interval);
   }, []);
 
-  const getTabLabel = (tab: ViewTab) => {
-    switch (tab) {
-      case 'products':
-        return 'Product-wise Companies';
-      case 'niches':
-        return 'Niche-wise Markets';
-      case 'companies':
-        return 'Companies Directory';
-      case 'table':
-        return 'Master Catalog Table';
-      case 'leads':
-        return 'Leads & Outreach CRM';
-      case 'analytics':
-        return 'Analytics & Market Overview';
-      default:
-        return 'Portal Overview';
-    }
-  };
+  // Scroll edge: show the hairline only when content actually passes under the bar
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => setScrolled(!entry.isIntersecting));
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   return (
-    <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 py-2">
-      {/* Left: Mobile hamburger & Search bar (Matching reference image) */}
-      <div className="flex items-center gap-3 flex-1 max-w-xl">
+    <>
+    <div ref={sentinelRef} aria-hidden="true" className="h-px -mb-px" />
+    <header
+      className={`sticky top-0 z-nav frosted border-b transition-colors duration-base ${
+        scrolled ? 'border-black/[0.08]' : 'border-transparent'
+      }`}
+    >
+      <div className="h-[52px] px-4 sm:px-6 lg:px-8 max-w-[1440px] mx-auto flex items-center gap-3 sm:gap-4">
         <button
           onClick={onOpenMobileMenu}
-          className="lg:hidden p-2.5 rounded-xl bg-white text-slate-600 hover:text-slate-900 shadow-xs border border-slate-200"
-          title="Open Menu"
+          aria-label="Open menu"
+          className="lg:hidden -ml-1.5 size-9 rounded-full flex items-center justify-center text-ink hover:bg-black/5"
         >
-          <Menu className="w-5 h-5" />
+          <Menu className="size-5" />
         </button>
 
-        {/* Reference Image Style Rounded Search Bar */}
-        <div className="relative flex-1">
+        <h1
+          key={activeTab}
+          className="text-[17px] sm:text-[21px] font-semibold text-ink tracking-apple truncate shrink-0 motion-fade"
+        >
+          {TAB_LABELS[activeTab] ?? 'Portal Overview'}
+        </h1>
+
+        <div className="flex-1" />
+
+        {/* Global search */}
+        <label className="relative hidden md:block w-full max-w-sm">
+          <span className="sr-only">Search products</span>
+          <Search className="size-[15px] text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
-            type="text"
+            type="search"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Search by brand, molecule, company, city, DRAP reg..."
-            className="w-full pl-5 pr-10 py-2.5 text-xs sm:text-sm bg-white border border-slate-200/90 rounded-2xl shadow-xs focus:outline-none focus:ring-2 focus:ring-[#0047ba]/30 focus:border-[#0047ba] text-slate-800 placeholder-slate-400 transition-all"
+            placeholder="Search brand, molecule, company, DRAP reg."
+            className="w-full h-9 pl-9 pr-4 text-[14px] tracking-caption bg-white border border-black/[0.08] rounded-full text-ink focus:outline-none focus:border-primary-focus focus:ring-4 focus:ring-primary-focus/15"
           />
-          <span className="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-slate-400">
-            <Search className="w-4 h-4 text-slate-400" />
-          </span>
-        </div>
-      </div>
+        </label>
 
-      {/* Right: Live Date/Time, Notification, Profile Pill & Action Button (Matching reference) */}
-      <div className="flex items-center gap-3 sm:gap-4 self-end md:self-center">
-        {/* Date Time Badge (matching "Monday, 10 Feb 2020, 02:30 PM") */}
-        <div className="hidden sm:flex items-center gap-2 text-xs font-semibold text-slate-500 bg-white px-3.5 py-2 rounded-2xl shadow-xs border border-slate-200/80">
-          <Calendar className="w-3.5 h-3.5 text-[#0047ba]" />
-          <span>{currentDateTime || 'Loading date...'}</span>
-        </div>
+        <span className="hidden xl:block text-[12px] text-slate-500 whitespace-nowrap tabular">{now}</span>
 
-        {/* Notification Bell */}
         <button
-          // onClick={() => alert(`Showing ${filteredCount} of ${totalCount} audited IV formulations in Pakistan.`)}
-          title="Audit Notifications"
-          className="w-10 h-10 rounded-2xl bg-white border border-slate-200/90 shadow-xs flex items-center justify-center text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-colors relative"
+          title="Audit notifications"
+          aria-label="Audit notifications"
+          className="relative size-9 rounded-full flex items-center justify-center text-slate-600 hover:bg-black/5 hover:text-ink shrink-0"
         >
-          <Bell className="w-4 h-4" />
-          <span className="w-2 h-2 rounded-full bg-[#f59e0b] absolute top-2.5 right-2.5 ring-2 ring-white"></span>
+          <Bell className="size-[18px]" strokeWidth={1.75} />
+          <span className="absolute top-2 right-2 size-1.5 rounded-full bg-primary" />
         </button>
 
-        {/* Reference Image Quick Action Button (Solid Royal Blue Plus Button) */}
         <button
           onClick={onExportClick}
-          title="Export CSV Dataset"
-          className="w-10 h-10 rounded-2xl bg-[#0047ba] hover:bg-[#003894] active:bg-[#002d75] text-white flex items-center justify-center shadow-md shadow-[#0047ba]/25 transition-all"
+          title="Export CSV dataset"
+          className="h-9 px-4 rounded-full bg-primary hover:bg-primary-hover text-white text-[14px] tracking-caption inline-flex items-center gap-1.5 shrink-0"
         >
-          <Download className="w-4 h-4" />
+          <Download className="size-4" />
+          <span className="hidden sm:inline">Export</span>
         </button>
       </div>
+
+      {/* Mobile search row */}
+      <div className="md:hidden px-4 pb-3">
+        <label className="relative block">
+          <span className="sr-only">Search products</span>
+          <Search className="size-[15px] text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <input
+            type="search"
+            value={searchQuery}
+            onChange={(e) => onSearchChange(e.target.value)}
+            placeholder="Search brand, molecule, company…"
+            className="w-full h-10 pl-9 pr-4 text-[15px] bg-white border border-black/[0.08] rounded-full text-ink focus:outline-none focus:border-primary-focus focus:ring-4 focus:ring-primary-focus/15"
+          />
+        </label>
+      </div>
     </header>
+    </>
   );
 };

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { usePresence } from '../hooks/usePresence';
 import { CompanySummary, CompanyLead, IVProduct } from '../types';
 import {
   Building2,
@@ -79,6 +80,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
   const [formData, setFormData] = useState<CompanyLeadFormState>(EMPTY_FORM);
   const [companySearchTerm, setCompanySearchTerm] = useState('');
   const [isCompanyDropdownOpen, setIsCompanyDropdownOpen] = useState(false);
+  const leadModal = usePresence(isModalOpen ? true : null);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [deleteConfirmName, setDeleteConfirmName] = useState<string | null>(null);
 
@@ -326,11 +328,11 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
       <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-blue-50 border border-blue-100 text-[#0047ba] flex items-center justify-center font-bold shadow-xs">
-              <Building2 className="w-5 h-5 text-[#0047ba]" />
+            <div className="w-10 h-10 rounded-2xl bg-blue-50 border border-blue-100 text-primary flex items-center justify-center font-semibold shadow-xs">
+              <Building2 className="w-5 h-5 text-primary" />
             </div>
             <div>
-              <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight">
+              <h2 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">
                 Company Leads &amp; Outreach CRM
               </h2>
               <p className="text-xs text-slate-500">
@@ -343,7 +345,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
         <div className="flex items-center gap-2.5 shrink-0">
           <button
             onClick={() => exportCompanyLeadsAsCSV()}
-            className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-bold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 rounded-xl transition-colors shadow-2xs"
+            className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 rounded-xl transition-colors shadow-2xs"
             title="Download all company leads as CSV file"
           >
             <Download className="w-3.5 h-3.5 text-slate-500" />
@@ -352,7 +354,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
 
           <button
             onClick={handleOpenCreateModal}
-            className="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold text-white bg-[#0047ba] hover:bg-[#003894] rounded-xl shadow-xs transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-primary hover:bg-primary-hover rounded-xl shadow-xs transition-colors"
           >
             <Plus className="w-4 h-4" />
             <span>+ Create Company Lead</span>
@@ -364,80 +366,80 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
         <button
           onClick={() => setStageFilter('ALL')}
-          className={`p-4 rounded-2xl border text-left transition-all ${
+          className={`p-4 rounded-2xl border text-left transition ${
             stageFilter === 'ALL'
               ? 'bg-blue-50/70 border-blue-300 ring-2 ring-blue-500/20 shadow-xs'
               : 'bg-white border-slate-200/90 hover:border-slate-300 shadow-xs'
           }`}
         >
-          <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+          <div className="text-[11px] font-semibold text-slate-500">
             Total Companies
           </div>
-          <div className="text-2xl font-black text-slate-900 mt-1">{stats.total}</div>
+          <div className="text-2xl font-semibold text-slate-900 mt-1">{stats.total}</div>
           <div className="text-[11px] text-slate-400 mt-0.5">Tracked accounts</div>
         </button>
 
         <button
           onClick={() => setStageFilter('In Discussion')}
-          className={`p-4 rounded-2xl border text-left transition-all ${
+          className={`p-4 rounded-2xl border text-left transition ${
             stageFilter === 'In Discussion'
               ? 'bg-blue-50/70 border-blue-300 ring-2 ring-blue-500/20 shadow-xs'
               : 'bg-white border-slate-200/90 hover:border-slate-300 shadow-xs'
           }`}
         >
-          <div className="text-[11px] font-bold uppercase tracking-wider text-blue-700 flex items-center justify-between">
+          <div className="text-[11px] font-semibold text-blue-700 flex items-center justify-between">
             <span>In Discussion</span>
             <span className="w-2 h-2 rounded-full bg-blue-600" />
           </div>
-          <div className="text-2xl font-black text-blue-700 mt-1">{stats.inDiscussion}</div>
+          <div className="text-2xl font-semibold text-blue-700 mt-1">{stats.inDiscussion}</div>
           <div className="text-[11px] text-blue-600/80 mt-0.5">Commercial meetings</div>
         </button>
 
         <button
           onClick={() => setStageFilter('Sample Sent')}
-          className={`p-4 rounded-2xl border text-left transition-all ${
+          className={`p-4 rounded-2xl border text-left transition ${
             stageFilter === 'Sample Sent'
               ? 'bg-amber-50/70 border-amber-300 ring-2 ring-amber-500/20 shadow-xs'
               : 'bg-white border-slate-200/90 hover:border-slate-300 shadow-xs'
           }`}
         >
-          <div className="text-[11px] font-bold uppercase tracking-wider text-amber-700 flex items-center justify-between">
+          <div className="text-[11px] font-semibold text-amber-700 flex items-center justify-between">
             <span>Sample Sent</span>
             <span className="w-2 h-2 rounded-full bg-amber-500" />
           </div>
-          <div className="text-2xl font-black text-amber-700 mt-1">{stats.sampleSent}</div>
+          <div className="text-2xl font-semibold text-amber-700 mt-1">{stats.sampleSent}</div>
           <div className="text-[11px] text-amber-600/80 mt-0.5">Testing hanger labels</div>
         </button>
 
         <button
           onClick={() => setStageFilter('Existing Client')}
-          className={`p-4 rounded-2xl border text-left transition-all ${
+          className={`p-4 rounded-2xl border text-left transition ${
             stageFilter === 'Existing Client'
               ? 'bg-emerald-50/70 border-emerald-300 ring-2 ring-emerald-500/20 shadow-xs'
               : 'bg-white border-slate-200/90 hover:border-slate-300 shadow-xs'
           }`}
         >
-          <div className="text-[11px] font-bold uppercase tracking-wider text-emerald-700 flex items-center justify-between">
+          <div className="text-[11px] font-semibold text-emerald-700 flex items-center justify-between">
             <span>Existing Client</span>
             <span className="w-2 h-2 rounded-full bg-emerald-500" />
           </div>
-          <div className="text-2xl font-black text-emerald-700 mt-1">{stats.existingClient}</div>
+          <div className="text-2xl font-semibold text-emerald-700 mt-1">{stats.existingClient}</div>
           <div className="text-[11px] text-emerald-600/80 mt-0.5">Active commercial accounts</div>
         </button>
 
         <button
           onClick={() => setBottleFilter(bottleFilter === 'GLASS' ? 'ALL' : 'GLASS')}
-          className={`p-4 rounded-2xl border text-left transition-all ${
+          className={`p-4 rounded-2xl border text-left transition ${
             bottleFilter === 'GLASS'
               ? 'bg-purple-50/70 border-purple-300 ring-2 ring-purple-500/20 shadow-xs'
               : 'bg-white border-slate-200/90 hover:border-slate-300 shadow-xs'
           }`}
         >
-          <div className="text-[11px] font-bold uppercase tracking-wider text-purple-700 flex items-center justify-between">
+          <div className="text-[11px] font-semibold text-purple-700 flex items-center justify-between">
             <span>Glass Targets</span>
             <span className="w-2 h-2 rounded-full bg-purple-500" />
           </div>
-          <div className="text-2xl font-black text-purple-700 mt-1">{stats.glassTargets}</div>
+          <div className="text-2xl font-semibold text-purple-700 mt-1">{stats.glassTargets}</div>
           <div className="text-[11px] text-purple-600/80 mt-0.5">Use glass infusion bottles</div>
         </button>
       </div>
@@ -451,7 +453,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search leads by company name, city, contact person, phone, email, notes, brand..."
-            className="w-full pl-9 pr-4 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0047ba]/30 focus:border-[#0047ba] text-slate-800"
+            className="w-full pl-9 pr-4 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary text-slate-800"
           />
           <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-3" />
           {searchQuery && (
@@ -466,7 +468,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
 
         {/* Filter Pills */}
         <div className="flex flex-wrap items-center gap-1.5 overflow-x-auto text-xs">
-          <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mr-1">
+          <span className="text-[11px] font-semibold text-slate-400 mr-1">
             Stage:
           </span>
           {(['ALL', 'In Discussion', 'Sample Sent', 'Existing Client', 'Not Contacted', 'Not Interested'] as StageFilter[]).map(
@@ -474,9 +476,9 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
               <button
                 key={stage}
                 onClick={() => setStageFilter(stage)}
-                className={`px-3 py-1.5 rounded-xl font-bold transition-colors ${
+                className={`px-3 py-1.5 rounded-xl font-semibold transition-colors ${
                   stageFilter === stage
-                    ? 'bg-[#0047ba] text-white shadow-xs'
+                    ? 'bg-primary text-white shadow-xs'
                     : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                 }`}
               >
@@ -519,7 +521,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
       <div className="bg-white rounded-2xl shadow-xs border border-slate-200 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs text-slate-600 border-collapse">
-            <thead className="bg-slate-100/90 text-slate-700 uppercase tracking-wider text-[11px] font-semibold border-b border-slate-200">
+            <thead className="bg-slate-100/90 text-slate-700 text-[11px] font-semibold border-b border-slate-200">
               <tr>
                 <th className="px-4 py-3.5 min-w-[220px]">Company &amp; Location</th>
                 <th className="px-3 py-3.5 min-w-[150px] text-center">Packaging Profile</th>
@@ -536,10 +538,10 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                 <tr>
                   <td colSpan={7} className="px-6 py-14 text-center">
                     <div className="max-w-sm mx-auto space-y-3">
-                      <div className="w-12 h-12 rounded-2xl bg-blue-50 text-[#0047ba] flex items-center justify-center mx-auto">
+                      <div className="w-12 h-12 rounded-2xl bg-blue-50 text-primary flex items-center justify-center mx-auto">
                         <Building2 className="w-6 h-6" />
                       </div>
-                      <h3 className="text-sm font-bold text-slate-800">No company leads match your filter</h3>
+                      <h3 className="text-sm font-semibold text-slate-800">No company leads match your filter</h3>
                       <p className="text-xs text-slate-500">
                         {companyLeadsList.length === 0
                           ? 'Create your first company lead or select any pharmaceutical manufacturer to start tracking outreach.'
@@ -547,7 +549,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                       </p>
                       <button
                         onClick={handleOpenCreateModal}
-                        className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-[#0047ba] hover:bg-[#003894] rounded-xl shadow-xs transition-colors"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-primary hover:bg-primary-hover rounded-xl shadow-xs transition-colors"
                       >
                         <Plus className="w-3.5 h-3.5" />
                         <span>Create Company Lead</span>
@@ -569,9 +571,9 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                             if (lead.summary) onSelectCompany(lead.summary);
                             else onFilterByCompany(lead.companyName);
                           }}
-                          className="font-bold text-slate-900 hover:text-blue-600 text-left transition-colors flex items-center gap-1.5"
+                          className="font-semibold text-slate-900 hover:text-blue-600 text-left transition-colors flex items-center gap-1.5"
                         >
-                          <Building2 className="w-3.5 h-3.5 text-[#0047ba] shrink-0" />
+                          <Building2 className="w-3.5 h-3.5 text-primary shrink-0" />
                           <span>{lead.companyName}</span>
                         </button>
                         <div className="text-[11px] text-slate-400 flex items-center gap-1 mt-0.5 pl-5">
@@ -584,17 +586,17 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                       <td className="px-3 py-3.5 text-center">
                         <div className="flex items-center justify-center gap-1.5 flex-wrap">
                           {(lead.glassCount ?? 0) > 0 && (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold badge-glass">
-                              🍾 {lead.glassCount} Glass
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold badge-glass">
+                              {lead.glassCount} Glass
                             </span>
                           )}
                           {(lead.plasticCount ?? 0) > 0 && (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold badge-plastic">
-                              🧴 {lead.plasticCount} BFS
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold badge-plastic">
+                              {lead.plasticCount} BFS
                             </span>
                           )}
                         </div>
-                        <div className="text-[10px] text-slate-400 font-medium mt-1">
+                        <div className="text-[10px] text-slate-400 font-normal mt-1">
                           {lead.totalProducts || 0} Total Formulations
                         </div>
                       </td>
@@ -606,7 +608,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                             {lead.brands.slice(0, 3).map((brand) => (
                               <span
                                 key={brand}
-                                className="px-2 py-0.5 bg-slate-100 rounded-md text-[10px] font-bold text-blue-700 truncate"
+                                className="px-2 py-0.5 bg-slate-100 rounded-md text-[10px] font-semibold text-blue-700 truncate"
                               >
                                 {brand}
                               </span>
@@ -633,7 +635,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                                 e.target.value as CompanyLead['status']
                               )
                             }
-                            className={`w-full appearance-none pl-6 pr-6 py-1 text-xs font-bold rounded-xl border cursor-pointer focus:outline-none transition-colors ${badge.bg}`}
+                            className={`w-full appearance-none pl-6 pr-6 py-1 text-xs font-semibold rounded-xl border cursor-pointer focus:outline-none transition-colors ${badge.bg}`}
                           >
                             <option value="Not Contacted">Not Contacted</option>
                             <option value="In Discussion">In Discussion</option>
@@ -656,11 +658,11 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
 
                       {/* Key Contact */}
                       <td className="px-4 py-3.5">
-                        <div className="font-bold text-slate-800">
+                        <div className="font-semibold text-slate-800">
                           {lead.contactPerson || <span className="text-slate-300 font-normal italic">No contact specified</span>}
                         </div>
                         {lead.title && (
-                          <div className="text-[11px] font-semibold text-[#0047ba] mt-0.5 truncate max-w-[190px]">
+                          <div className="text-[11px] font-semibold text-primary mt-0.5 truncate max-w-[190px]">
                             {lead.title}
                           </div>
                         )}
@@ -737,7 +739,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                             <button
                               onClick={() => handleDeleteLead(lead.companyName)}
                               title="Confirm Remove Lead"
-                              className="px-2 py-0.5 text-[10px] font-bold bg-rose-600 text-white rounded-md hover:bg-rose-700"
+                              className="px-2 py-0.5 text-[10px] font-semibold bg-rose-600 text-white rounded-md hover:bg-rose-700"
                             >
                               Confirm
                             </button>
@@ -762,17 +764,17 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
       </div>
 
       {/* CREATE / EDIT COMPANY LEAD MODAL */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl shadow-2xl border border-slate-200 w-full max-w-xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      {leadModal.value && (
+        <div data-state={leadModal.state} onClick={(e) => e.target === e.currentTarget && setIsModalOpen(false)} className="motion-scrim fixed inset-0 z-50 overflow-y-auto bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl shadow-2xl border border-slate-200 w-full max-w-xl overflow-hidden motion-sheet">
             {/* Modal Header */}
             <div className="p-5 sm:p-6 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-blue-100 text-[#0047ba] flex items-center justify-center font-bold">
+                <div className="w-10 h-10 rounded-2xl bg-blue-100 text-primary flex items-center justify-center font-semibold">
                   <Building2 className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-base sm:text-lg font-extrabold text-slate-900">
+                  <h3 className="text-base sm:text-lg font-semibold text-slate-900">
                     {modalMode === 'create' ? 'Create New Company Lead' : 'Edit Company Lead'}
                   </h3>
                   <p className="text-xs text-slate-500">
@@ -793,7 +795,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
             <form onSubmit={handleSaveLead} className="p-5 sm:p-6 space-y-4 text-xs">
               {/* Company Selection / Auto-Suggest */}
               <div>
-                <label className="text-[11px] font-bold text-slate-700 uppercase tracking-wider block mb-1.5">
+                <label className="text-[11px] font-semibold text-slate-700 block mb-1.5">
                   Target Pharmaceutical Company <span className="text-rose-500">*</span>
                 </label>
 
@@ -808,13 +810,13 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                     }}
                     onFocus={() => setIsCompanyDropdownOpen(true)}
                     placeholder="Search manufacturer name (e.g. Bosch, Otsuka, Pacific, Medipak)..."
-                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0047ba]/30 focus:border-[#0047ba]"
+                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
                   />
                   <Search className="w-3.5 h-3.5 text-slate-400 absolute right-3.5 top-3.5 pointer-events-none" />
 
                   {/* Autocomplete Dropdown */}
                   {isCompanyDropdownOpen && (
-                    <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-slate-200 rounded-xl shadow-lg max-h-56 overflow-y-auto z-50 divide-y divide-slate-100">
+                    <div className="motion-pop absolute top-full left-0 right-0 mt-1 bg-white border border-slate-200 rounded-xl shadow-lg max-h-56 overflow-y-auto z-50 divide-y divide-slate-100">
                       {filteredCompanyOptions.map((c) => (
                         <div
                           key={c.name}
@@ -822,8 +824,8 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                           className="p-2.5 hover:bg-blue-50 cursor-pointer flex items-center justify-between gap-2 transition-colors"
                         >
                           <div>
-                            <div className="font-bold text-slate-900 flex items-center gap-1.5">
-                              <Building2 className="w-3.5 h-3.5 text-[#0047ba]" />
+                            <div className="font-semibold text-slate-900 flex items-center gap-1.5">
+                              <Building2 className="w-3.5 h-3.5 text-primary" />
                               <span>{c.name}</span>
                             </div>
                             <div className="text-[11px] text-slate-500">
@@ -832,12 +834,12 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                           </div>
                           <div>
                             {c.glassCount > 0 ? (
-                              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold badge-glass">
-                                🍾 {c.glassCount} Glass Target
+                              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold badge-glass">
+                                {c.glassCount} Glass Target
                               </span>
                             ) : (
-                              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold badge-plastic">
-                                🧴 BFS Plastic
+                              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold badge-plastic">
+                                BFS Plastic
                               </span>
                             )}
                           </div>
@@ -852,7 +854,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
               {selectedCompanySummary && (
                 <div className="p-3 bg-blue-50/70 rounded-xl border border-blue-100 flex items-center justify-between">
                   <div>
-                    <div className="font-extrabold text-blue-900 text-xs">
+                    <div className="font-semibold text-blue-900 text-xs">
                       {selectedCompanySummary.name}
                     </div>
                     <div className="text-[11px] text-blue-700 mt-0.5">
@@ -861,12 +863,12 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                   </div>
                   <div>
                     {selectedCompanySummary.glassCount > 0 ? (
-                      <span className="px-2.5 py-1 rounded-full text-xs font-bold badge-glass">
-                        🍾 {selectedCompanySummary.glassCount} Glass (Hanger Target)
+                      <span className="px-2.5 py-1 rounded-full text-xs font-semibold badge-glass">
+                        {selectedCompanySummary.glassCount} Glass (Hanger Target)
                       </span>
                     ) : (
-                      <span className="px-2.5 py-1 rounded-full text-xs font-bold badge-plastic">
-                        🧴 Plastic BFS Only
+                      <span className="px-2.5 py-1 rounded-full text-xs font-semibold badge-plastic">
+                        Plastic BFS Only
                       </span>
                     )}
                   </div>
@@ -876,7 +878,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
               {/* Outreach Stage & City */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div>
-                  <label className="text-[11px] font-bold text-slate-700 uppercase tracking-wider block mb-1">
+                  <label className="text-[11px] font-semibold text-slate-700 block mb-1">
                     Outreach Stage <span className="text-rose-500">*</span>
                   </label>
                   <select
@@ -887,7 +889,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                         status: e.target.value as CompanyLead['status'],
                       })
                     }
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0047ba]/30"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/30"
                   >
                     <option value="Not Contacted">Not Contacted</option>
                     <option value="In Discussion">In Discussion</option>
@@ -898,7 +900,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-bold text-slate-700 uppercase tracking-wider block mb-1">
+                  <label className="text-[11px] font-semibold text-slate-700 block mb-1">
                     Manufacturing City / Plant Location
                   </label>
                   <input
@@ -906,7 +908,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                     value={formData.city}
                     onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                     placeholder="e.g. Karachi / Lahore / Hattar"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0047ba]/30"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/30"
                   />
                 </div>
               </div>
@@ -914,7 +916,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
               {/* Key Contact Person & Title */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div>
-                  <label className="text-[11px] font-bold text-slate-700 uppercase tracking-wider block mb-1">
+                  <label className="text-[11px] font-semibold text-slate-700 block mb-1">
                     Key Contact Person
                   </label>
                   <input
@@ -922,12 +924,12 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                     value={formData.contactPerson}
                     onChange={(e) => setFormData({ ...formData, contactPerson: e.target.value })}
                     placeholder="e.g. Dr. Aftab / Mr. Tariq Khan"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0047ba]/30"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/30"
                   />
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-bold text-slate-700 uppercase tracking-wider block mb-1">
+                  <label className="text-[11px] font-semibold text-slate-700 block mb-1">
                     Title / Department
                   </label>
                   <input
@@ -935,7 +937,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                     placeholder="e.g. Head of Procurement / Plant Manager"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0047ba]/30"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/30"
                   />
                 </div>
               </div>
@@ -943,7 +945,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
               {/* Phone, Email & LinkedIn */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
-                  <label className="text-[11px] font-bold text-slate-700 uppercase tracking-wider block mb-1 flex items-center gap-1">
+                  <label className="text-[11px] font-semibold text-slate-700 block mb-1 flex items-center gap-1">
                     <Phone className="w-3 h-3 text-slate-400" />
                     <span>Phone / WhatsApp</span>
                   </label>
@@ -952,12 +954,12 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     placeholder="e.g. +92 300 1234567"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0047ba]/30"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/30"
                   />
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-bold text-slate-700 uppercase tracking-wider block mb-1 flex items-center gap-1">
+                  <label className="text-[11px] font-semibold text-slate-700 block mb-1 flex items-center gap-1">
                     <Mail className="w-3 h-3 text-slate-400" />
                     <span>Email Address</span>
                   </label>
@@ -966,12 +968,12 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     placeholder="e.g. procurement@pharma.pk"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0047ba]/30"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/30"
                   />
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-bold text-slate-700 uppercase tracking-wider block mb-1 flex items-center gap-1">
+                  <label className="text-[11px] font-semibold text-slate-700 block mb-1 flex items-center gap-1">
                     <Linkedin className="w-3 h-3 text-slate-400" />
                     <span>LinkedIn Profile</span>
                   </label>
@@ -980,14 +982,14 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                     value={formData.linkedin}
                     onChange={(e) => setFormData({ ...formData, linkedin: e.target.value })}
                     placeholder="e.g. linkedin.com/in/..."
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0047ba]/30"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/30"
                   />
                 </div>
               </div>
 
               {/* Private Outreach & Pitch Notes */}
               <div>
-                <label className="text-[11px] font-bold text-slate-700 uppercase tracking-wider block mb-1">
+                <label className="text-[11px] font-semibold text-slate-700 block mb-1">
                   Private Outreach &amp; Pitch Notes
                 </label>
                 <textarea
@@ -995,7 +997,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                   value={formData.notes}
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                   placeholder="Enter meeting logs, hanger label sample shipments, plant requirements, target volumes, pricing..."
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0047ba]/30"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/30"
                 />
               </div>
 
@@ -1004,7 +1006,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
+                  className="px-4 py-2 font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
                 >
                   Cancel
                 </button>
@@ -1012,10 +1014,10 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
                 <button
                   type="submit"
                   disabled={saveSuccess}
-                  className={`inline-flex items-center gap-1.5 px-5 py-2 font-bold rounded-xl text-white transition-all shadow-sm ${
+                  className={`inline-flex items-center gap-1.5 px-5 py-2 font-semibold rounded-xl text-white transition shadow-sm ${
                     saveSuccess
                       ? 'bg-emerald-600'
-                      : 'bg-[#0047ba] hover:bg-[#003894]'
+                      : 'bg-primary hover:bg-primary-hover'
                   }`}
                 >
                   {saveSuccess ? (

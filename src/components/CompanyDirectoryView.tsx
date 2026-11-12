@@ -59,7 +59,7 @@ export const CompanyDirectoryView: React.FC<CompanyDirectoryViewProps> = ({
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search manufacturer, city, brand or molecule..."
-            className="w-full pl-10 pr-3.5 py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0047ba]/30 focus:border-[#0047ba]"
+            className="w-full pl-10 pr-3.5 py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
           />
         </div>
 
@@ -67,7 +67,7 @@ export const CompanyDirectoryView: React.FC<CompanyDirectoryViewProps> = ({
           <select
             value={cityFilter}
             onChange={(e) => setCityFilter(e.target.value)}
-            className="px-2.5 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0047ba]/30 text-slate-700"
+            className="px-2.5 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 text-slate-700"
           >
             <option value="">All Cities ({cities.length})</option>
             {cities.map(ct => (
@@ -79,18 +79,18 @@ export const CompanyDirectoryView: React.FC<CompanyDirectoryViewProps> = ({
             <button
               key={f}
               onClick={() => setTargetFilter(f)}
-              className={`px-3 py-2 rounded-xl font-semibold transition-all ${
+              className={`px-3 py-2 rounded-xl font-semibold transition ${
                 targetFilter === f
                   ? f === 'glass'     ? 'bg-emerald-700 text-white'
                   : f === 'plastic'   ? 'bg-amber-700 text-white'
-                  : f === 'contacted' ? 'bg-[#0047ba] text-white'
+                  : f === 'contacted' ? 'bg-primary text-white'
                   :                     'bg-slate-800 text-white'
                   : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
               }`}
             >
               {f === 'all'       && `All (${companies.length})`}
-              {f === 'glass'     && '🍾 Glass Users'}
-              {f === 'plastic'   && '🧴 BFS Plastic'}
+              {f === 'glass'     && 'Glass Users'}
+              {f === 'plastic'   && 'BFS Plastic'}
               {f === 'contacted' && (
                 <span className="flex items-center gap-1">
                   <UserCircle2 className="w-3.5 h-3.5" />
@@ -115,10 +115,10 @@ export const CompanyDirectoryView: React.FC<CompanyDirectoryViewProps> = ({
       </div>
 
       {/* ── Result count ── */}
-      <div className="text-xs text-slate-500 font-medium px-1">
+      <div className="text-xs text-slate-500 font-normal px-1">
         Showing <strong className="text-slate-700">{filteredCompanies.length}</strong> of {companies.length} manufacturers
         {savedCount > 0 && (
-          <span className="ml-2 text-[#0047ba] font-semibold">
+          <span className="ml-2 text-primary font-semibold">
             • {savedCount} with management contact saved
           </span>
         )}
@@ -133,19 +133,19 @@ export const CompanyDirectoryView: React.FC<CompanyDirectoryViewProps> = ({
           return (
             <div
               key={c.name}
-              className={`bg-white rounded-2xl p-5 border shadow-xs hover:shadow-md transition-all flex flex-col justify-between ${
-                contact ? 'border-[#0047ba]/30 ring-1 ring-[#0047ba]/10' : 'border-slate-200 hover:border-slate-300'
+              className={`bg-white rounded-2xl p-5 border shadow-xs hover:shadow-md transition flex flex-col justify-between ${
+                contact ? 'border-primary/30 ring-1 ring-primary/10' : 'border-slate-200 hover:border-slate-300'
               }`}
             >
               <div>
                 {/* Header row */}
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-start gap-2.5">
-                    <div className="w-10 h-10 rounded-xl bg-blue-50 text-[#0047ba] flex items-center justify-center font-bold shrink-0 mt-0.5">
+                    <div className="w-10 h-10 rounded-xl bg-blue-50 text-primary flex items-center justify-center font-semibold shrink-0 mt-0.5">
                       <Building2 className="w-5 h-5" />
                     </div>
                     <div>
-                      <h4 className="text-sm font-bold text-slate-900 leading-snug">{c.name}</h4>
+                      <h4 className="text-sm font-semibold text-slate-900 leading-snug">{c.name}</h4>
                       <div className="flex items-center gap-1 text-[11px] text-slate-400 mt-0.5">
                         <MapPin className="w-3 h-3" />
                         <span>{c.city || 'Pakistan'}</span>
@@ -155,18 +155,18 @@ export const CompanyDirectoryView: React.FC<CompanyDirectoryViewProps> = ({
 
                   <div className="flex flex-col items-end gap-1 shrink-0">
                     {c.glassCount > 0 ? (
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full badge-glass">🍾 Prime Target</span>
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full badge-glass">Prime Target</span>
                     ) : (
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full badge-plastic">🧴 BFS Line</span>
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full badge-plastic">BFS Line</span>
                     )}
                   </div>
                 </div>
 
                 {/* Packaging progress bar */}
                 <div className="mt-4 pt-3 border-t border-slate-100">
-                  <div className="flex items-center justify-between text-[11px] mb-1.5 font-medium">
+                  <div className="flex items-center justify-between text-[11px] mb-1.5 font-normal">
                     <span className="text-slate-500">Portfolio Packaging:</span>
-                    <span className="text-slate-800 font-bold">{c.totalProducts} Formulations</span>
+                    <span className="text-slate-800 font-semibold">{c.totalProducts} Formulations</span>
                   </div>
                   <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden flex">
                     {c.glassCount > 0 && (
@@ -184,13 +184,13 @@ export const CompanyDirectoryView: React.FC<CompanyDirectoryViewProps> = ({
 
                 {/* Key molecules */}
                 <div className="mt-3.5 space-y-1.5 text-xs">
-                  <div className="text-[11px] font-medium text-slate-500">Key Products / Molecules:</div>
+                  <div className="text-[11px] font-normal text-slate-500">Key Products / Molecules:</div>
                   <div className="flex flex-wrap gap-1">
                     {c.molecules.slice(0, 4).map(m => (
                       <span key={m} className="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md">{m}</span>
                     ))}
                     {c.molecules.length > 4 && (
-                      <span className="text-[10px] text-slate-400 font-medium px-1 py-0.5">+{c.molecules.length - 4} more</span>
+                      <span className="text-[10px] text-slate-400 font-normal px-1 py-0.5">+{c.molecules.length - 4} more</span>
                     )}
                   </div>
                 </div>
@@ -200,19 +200,19 @@ export const CompanyDirectoryView: React.FC<CompanyDirectoryViewProps> = ({
                   <div className="mt-3.5 pt-3 border-t border-slate-100">
                     <div className="flex items-center gap-2 bg-blue-50 border border-blue-100 rounded-xl px-3 py-2">
                       {/* Avatar initial */}
-                      <div className="w-7 h-7 rounded-lg bg-[#0047ba] text-white flex items-center justify-center text-xs font-extrabold shrink-0">
+                      <div className="w-7 h-7 rounded-lg bg-primary text-white flex items-center justify-center text-xs font-semibold shrink-0">
                         {contact.personName.charAt(0).toUpperCase() || '?'}
                       </div>
                       <div className="min-w-0 flex-1">
-                        <div className="text-xs font-bold text-slate-900 truncate">{contact.personName}</div>
+                        <div className="text-xs font-semibold text-slate-900 truncate">{contact.personName}</div>
                         {contact.title && (
-                          <div className="text-[10px] text-[#0047ba] font-semibold truncate">{contact.title}</div>
+                          <div className="text-[10px] text-primary font-semibold truncate">{contact.title}</div>
                         )}
                       </div>
                       <div className="flex items-center gap-1.5 shrink-0">
                         {contact.phone && (
                           <a href={`tel:${contact.phone}`} title={contact.phone}
-                            className="p-1 rounded-lg text-slate-400 hover:text-[#0047ba] hover:bg-white transition-colors">
+                            className="p-1 rounded-lg text-slate-400 hover:text-primary hover:bg-white transition-colors">
                             <Phone className="w-3.5 h-3.5" />
                           </a>
                         )}
@@ -244,7 +244,7 @@ export const CompanyDirectoryView: React.FC<CompanyDirectoryViewProps> = ({
                     setContacts(getAllCompanyContacts()); // refresh before opening modal
                     onSelectCompany(c);
                   }}
-                  className="text-xs font-semibold text-[#0047ba] hover:text-[#003894] transition-colors"
+                  className="text-xs font-semibold text-primary hover:text-primary-hover transition-colors"
                 >
                   View Company Profile →
                 </button>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { IVProduct, MoleculeSummary } from '../types';
-import { ChevronDown, ChevronUp, ExternalLink, Image, Building2 } from 'lucide-react';
+import { ChevronDown, ExternalLink, Image, Building2 } from 'lucide-react';
 
 interface ProductWiseViewProps {
   molecules: MoleculeSummary[];
@@ -60,7 +60,7 @@ export const ProductWiseView: React.FC<ProductWiseViewProps> = ({
         </div>
 
         <div className="flex items-center gap-2 text-xs">
-          <span className="text-slate-400 font-medium">
+          <span className="text-slate-400 font-normal">
             {filteredMolecules.length} Molecules Found
           </span>
           <span className="text-slate-300">•</span>
@@ -73,7 +73,7 @@ export const ProductWiseView: React.FC<ProductWiseViewProps> = ({
           <span className="text-slate-300">|</span>
           <button
             onClick={collapseAll}
-            className="text-slate-500 hover:text-slate-700 font-medium transition-colors"
+            className="text-slate-500 hover:text-slate-700 font-normal transition-colors"
           >
             Collapse All
           </button>
@@ -88,23 +88,30 @@ export const ProductWiseView: React.FC<ProductWiseViewProps> = ({
           return (
             <div
               key={m.molecule}
-              className="bg-white rounded-2xl shadow-xs border border-slate-200 overflow-hidden transition-all hover:border-slate-300"
+              className="bg-white rounded-2xl shadow-xs border border-slate-200 overflow-hidden transition hover:border-slate-300"
             >
               {/* Header */}
               <div
                 onClick={() => toggleExpand(m.molecule)}
-                className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 cursor-pointer bg-gradient-to-r from-white to-slate-50/50 hover:bg-slate-50 transition-colors"
+                role="button"
+                tabIndex={0}
+                aria-expanded={isExpanded}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleExpand(m.molecule);
+                  }
+                }}
+                className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 cursor-pointer hover:bg-slate-50 transition-colors"
               >
                 <div className="flex items-start sm:items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold text-lg shrink-0">
-                    💊
-                  </div>
+                  <div className="size-10 rounded-xl bg-slate-100 text-slate-900 flex items-center justify-center font-semibold text-[15px] shrink-0" aria-hidden="true">{m.molecule.charAt(0)}</div>
                   <div>
                     <div className="flex items-center gap-2 flex-wrap">
-                      <h3 className="text-base sm:text-lg font-bold text-slate-900">
+                      <h3 className="text-base sm:text-lg font-semibold text-slate-900">
                         {m.molecule}
                       </h3>
-                      <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600">
+                      <span className="text-[11px] font-normal px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600">
                         {m.category}
                       </span>
                     </div>
@@ -126,25 +133,31 @@ export const ProductWiseView: React.FC<ProductWiseViewProps> = ({
                   <div className="flex items-center gap-1.5 text-xs">
                     {m.glassCount > 0 && (
                       <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold badge-glass">
-                        🍾 {m.glassCount} Glass
+                        {m.glassCount} Glass
                       </span>
                     )}
                     {m.plasticCount > 0 && (
                       <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold badge-plastic">
-                        🧴 {m.plasticCount} Plastic BFS
+                        {m.plasticCount} Plastic BFS
                       </span>
                     )}
                   </div>
                   <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500">
-                    {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                    <ChevronDown className={`size-4 transition-transform duration-slow ease-in-out ${isExpanded ? 'rotate-180' : ''}`} />
                   </div>
                 </div>
               </div>
 
               {/* Collapsible Company Breakdown Table */}
-              {isExpanded && (
+              <div
+                className="motion-collapse"
+                data-open={isExpanded}
+                aria-hidden={!isExpanded}
+                {...({ inert: isExpanded ? undefined : '' } as Record<string, unknown>)}
+                >
+                <div>
                 <div className="border-t border-slate-100 bg-slate-50/50 p-3 sm:p-5">
-                  <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                  <div className="text-xs font-semibold text-slate-500 mb-2.5 flex items-center gap-1.5">
                     <Building2 className="w-3.5 h-3.5 text-slate-400" />
                     <span>Companies Manufacturing {m.molecule}:</span>
                   </div>
@@ -156,14 +169,14 @@ export const ProductWiseView: React.FC<ProductWiseViewProps> = ({
                       return (
                         <div
                           key={p.sno}
-                          className="bg-white p-3.5 rounded-xl border border-slate-200/80 shadow-2xs hover:shadow-sm hover:border-blue-300 transition-all flex flex-col justify-between"
+                          className="bg-white p-3.5 rounded-xl border border-slate-200/80 shadow-2xs hover:shadow-sm hover:border-blue-300 transition flex flex-col justify-between"
                         >
                           <div>
                             <div className="flex items-start justify-between gap-2">
                               <div>
                                 <button
                                   onClick={() => onFilterByCompany(p.company)}
-                                  className="text-xs font-bold text-slate-900 hover:text-blue-600 text-left transition-colors"
+                                  className="text-xs font-semibold text-slate-900 hover:text-blue-600 text-left transition-colors"
                                 >
                                   {p.company}
                                 </button>
@@ -172,11 +185,11 @@ export const ProductWiseView: React.FC<ProductWiseViewProps> = ({
                                 </div>
                               </div>
                               <span
-                                className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                                className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
                                   p.is_glass ? 'badge-glass' : 'badge-plastic'
                                 }`}
                               >
-                                {p.is_glass ? '🍾 Glass' : '🧴 Plastic BFS'}
+                                {p.is_glass ? 'Glass' : 'Plastic BFS'}
                               </span>
                             </div>
 
@@ -236,7 +249,8 @@ export const ProductWiseView: React.FC<ProductWiseViewProps> = ({
                     })}
                   </div>
                 </div>
-              )}
+                </div>
+              </div>
             </div>
           );
         })}
