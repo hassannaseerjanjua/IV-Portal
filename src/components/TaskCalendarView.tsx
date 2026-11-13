@@ -333,11 +333,11 @@ export const TaskCalendarView: React.FC<TaskCalendarViewProps> = ({
     const targetLead: CompanyLead & { summary?: CompanySummary } = storedLead
       ? { ...storedLead, summary }
       : {
-          companyName,
-          status: 'Not Contacted',
-          city: summary?.city || '',
-          summary,
-        };
+        companyName,
+        status: 'Not Contacted',
+        city: summary?.city || '',
+        summary,
+      };
 
     setSelectedLeadForDrawer(targetLead);
   };
@@ -503,21 +503,19 @@ export const TaskCalendarView: React.FC<TaskCalendarViewProps> = ({
             <div className="flex items-center rounded-lg overflow-hidden border border-slate-200 bg-white shadow-2xs">
               <button
                 onClick={() => setCurrentView(Views.MONTH)}
-                className={`px-3.5 py-1.5 text-xs font-semibold transition-colors ${
-                  currentView === Views.MONTH
-                    ? 'bg-[#002d75] text-white'
-                    : 'text-slate-600 hover:bg-slate-50'
-                }`}
+                className={`px-3.5 py-1.5 text-xs font-semibold transition-colors ${currentView === Views.MONTH
+                  ? 'bg-[#002d75] text-white'
+                  : 'text-slate-600 hover:bg-slate-50'
+                  }`}
               >
                 Month
               </button>
               <button
                 onClick={() => setCurrentView(Views.WEEK)}
-                className={`px-3.5 py-1.5 text-xs font-semibold transition-colors border-l border-slate-200 ${
-                  currentView === Views.WEEK
-                    ? 'bg-[#002d75] text-white'
-                    : 'text-slate-600 hover:bg-slate-50'
-                }`}
+                className={`px-3.5 py-1.5 text-xs font-semibold transition-colors border-l border-slate-200 ${currentView === Views.WEEK
+                  ? 'bg-[#002d75] text-white'
+                  : 'text-slate-600 hover:bg-slate-50'
+                  }`}
               >
                 Week
               </button>
@@ -526,7 +524,7 @@ export const TaskCalendarView: React.FC<TaskCalendarViewProps> = ({
         </div>
 
         {/* Calendar Grid Container */}
-        <div className="mt-4 custom-big-calendar-container min-h-[640px]">
+        <div className="mt-4 custom-big-calendar-container">
           <Calendar
             localizer={localizer}
             events={calendarEvents}
@@ -537,14 +535,13 @@ export const TaskCalendarView: React.FC<TaskCalendarViewProps> = ({
             view={currentView}
             onView={(v) => setCurrentView(v)}
             views={[Views.MONTH, Views.WEEK]}
-            toolbar={false} // Custom toolbar above
-            selectable={true}
+            toolbar={false}
+            selectable
             onSelectSlot={handleSelectSlot}
             onSelectEvent={handleSelectEvent}
-            components={{
-              event: CustomEvent as any,
-            }}
+            components={{ event: CustomEvent as any }}
             popup
+            style={{ height: 700 }}   // 👈 add this
           />
         </div>
       </div>
@@ -732,16 +729,16 @@ const DayDetailDrawer: React.FC<DayDetailDrawerProps> = ({
       />
 
       {/* Drawer Panel */}
-      <div className="relative w-full max-w-md sm:max-w-lg bg-white shadow-2xl flex flex-col h-screen z-10 animate-in slide-in-from-right duration-200">
+      <div className="relative w-full max-w-md sm:max-w-md bg-white shadow-2xl flex flex-col h-screen z-10 animate-in slide-in-from-right duration-200">
         {/* Navy Header (Screenshot 2) */}
-        <div className="bg-[#002d75] text-white px-6 py-5 flex items-center justify-between flex-shrink-0 shadow-md">
+        <div className="px-6 py-5 flex border-b items-center justify-between flex-shrink-0 shadow-md">
           <div>
-            <h2 className="text-lg font-bold tracking-tight text-white">{formattedDate}</h2>
-            <p className="text-xs text-blue-100 font-medium mt-0.5">{taskCountText}</p>
+            <h2 className="text-lg font-bold tracking-tight">{formattedDate}</h2>
+            <p className="text-xs text-blue-500 font-medium mt-0.5">{taskCountText}</p>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
+            className="w-8 h-8 rounded-full bg-gray-300 hover:bg-gray-400 text-white flex items-center justify-center transition-colors"
             title="Close"
           >
             <X className="w-4 h-4" />
@@ -901,7 +898,7 @@ const DayDetailDrawer: React.FC<DayDetailDrawerProps> = ({
                 if (task.dueDate && task.dueDate.includes('T')) {
                   try {
                     timeDisplay = format(new Date(task.dueDate), 'h:mm a');
-                  } catch {}
+                  } catch { }
                 }
 
                 return (
@@ -922,13 +919,12 @@ const DayDetailDrawer: React.FC<DayDetailDrawerProps> = ({
                             {task.title}
                           </span>
                           <span
-                            className={`text-[11px] px-2 py-0.5 rounded-md font-medium ${
-                              task.status === 'Closed'
-                                ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                                : task.status === 'In Progress'
+                            className={`text-[11px] px-2 py-0.5 rounded-md font-medium ${task.status === 'Closed'
+                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                              : task.status === 'In Progress'
                                 ? 'bg-blue-50 text-blue-700 border border-blue-200'
                                 : 'bg-slate-100 text-slate-700 border border-slate-200'
-                            }`}
+                              }`}
                           >
                             {task.status === 'Todo' ? 'ToDo' : task.status}
                           </span>
