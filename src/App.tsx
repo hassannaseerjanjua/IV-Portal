@@ -20,6 +20,7 @@ import { CompanyDirectoryView } from './components/CompanyDirectoryView';
 import { TableView } from './components/TableView';
 import { AnalyticsView } from './components/AnalyticsView';
 import { AddLead } from './components/addLead';
+import { TaskCalendarView } from './components/TaskCalendarView';
 import { ProductDetailModal } from './components/ProductDetailModal';
 import { CompanyDetailModal } from './components/CompanyDetailModal';
 import { getStoredCompanyLeads, getStoredOutreachRecords, subscribeToCompanyLeadUpdates } from './utils/crmStorage';
@@ -190,7 +191,7 @@ export const App: React.FC = () => {
         />
 
         <div className="px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-[1440px] mx-auto space-y-6">
-          {activeTab !== 'leads' && activeTab !== 'analytics' && (
+          {activeTab !== 'leads' && activeTab !== 'analytics' && activeTab !== 'calendar' && (
             <SearchToolbar
               filters={filters}
               onFilterChange={setFilters}
@@ -242,6 +243,13 @@ export const App: React.FC = () => {
                 companies={allCompanies}
                 onSelectCompany={setSelectedCompany}
                 onFilterByCompany={handleFilterByCompany}
+              />
+            )}
+
+            {activeTab === 'calendar' && (
+              <TaskCalendarView
+                companies={allCompanies}
+                onSelectCompany={setSelectedCompany}
               />
             )}
 

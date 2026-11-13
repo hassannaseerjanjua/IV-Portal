@@ -18,6 +18,7 @@ const TAB_LABELS: Partial<Record<ViewTab, string>> = {
   companies: 'Companies Directory',
   table: 'Master Catalog',
   leads: 'Leads & Outreach',
+  calendar: 'Task Calendar & Schedule',
   analytics: 'Market Overview',
 };
 

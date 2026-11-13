@@ -17,7 +17,7 @@ export interface IVProduct {
   image_link: string;
 }
 
-export type ViewTab = 'products' | 'niches' | 'companies' | 'table' | 'leads' | 'analytics' | 'pipeline';
+export type ViewTab = 'products' | 'niches' | 'companies' | 'table' | 'leads' | 'calendar' | 'analytics' | 'pipeline';
 
 export type PackagingFilter = 'all' | 'glass' | 'plastic';
 
@@ -109,4 +109,24 @@ export interface CompanyContact {
   phone: string;
   email: string;
   updatedAt?: string;
+}
+
+export type LeadTaskType =
+  | 'Follow Up'
+  | 'Call'
+  | 'Email'
+  | 'Meeting'
+  | 'Sample Dispatch'
+  | 'Contract';
+
+export type LeadTaskStatus = 'Todo' | 'In Progress' | 'Closed';
+
+export interface LeadTask {
+  id: string;
+  title: string;
+  type: LeadTaskType;
+  status: LeadTaskStatus;
+  dueDate?: string;
+  notes?: string;
+  createdAt: string;
 }
