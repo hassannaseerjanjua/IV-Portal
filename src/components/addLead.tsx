@@ -388,11 +388,10 @@ export const AddLead: React.FC<AddLeadProps> = ({
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
         <button
           onClick={() => setStageFilter('ALL')}
-          className={`p-4 rounded-2xl border text-left transition ${
-            stageFilter === 'ALL'
-              ? 'bg-blue-50/70 border-blue-300 ring-2 ring-blue-500/20 shadow-xs'
-              : 'bg-white border-slate-200/90 hover:border-slate-300 shadow-xs'
-          }`}
+          className={`p-4 rounded-2xl border text-left transition ${stageFilter === 'ALL'
+            ? 'bg-blue-50/70 border-blue-300 ring-2 ring-blue-500/20 shadow-xs'
+            : 'bg-white border-slate-200/90 hover:border-slate-300 shadow-xs'
+            }`}
         >
           <div className="text-[11px] font-semibold text-slate-500">
             Total Companies
@@ -403,11 +402,10 @@ export const AddLead: React.FC<AddLeadProps> = ({
 
         <button
           onClick={() => setStageFilter('In Discussion')}
-          className={`p-4 rounded-2xl border text-left transition ${
-            stageFilter === 'In Discussion'
-              ? 'bg-blue-50/70 border-blue-300 ring-2 ring-blue-500/20 shadow-xs'
-              : 'bg-white border-slate-200/90 hover:border-slate-300 shadow-xs'
-          }`}
+          className={`p-4 rounded-2xl border text-left transition ${stageFilter === 'In Discussion'
+            ? 'bg-blue-50/70 border-blue-300 ring-2 ring-blue-500/20 shadow-xs'
+            : 'bg-white border-slate-200/90 hover:border-slate-300 shadow-xs'
+            }`}
         >
           <div className="text-[11px] font-semibold text-blue-700 flex items-center justify-between">
             <span>In Discussion</span>
@@ -419,11 +417,10 @@ export const AddLead: React.FC<AddLeadProps> = ({
 
         <button
           onClick={() => setStageFilter('Sample Sent')}
-          className={`p-4 rounded-2xl border text-left transition ${
-            stageFilter === 'Sample Sent'
-              ? 'bg-amber-50/70 border-amber-300 ring-2 ring-amber-500/20 shadow-xs'
-              : 'bg-white border-slate-200/90 hover:border-slate-300 shadow-xs'
-          }`}
+          className={`p-4 rounded-2xl border text-left transition ${stageFilter === 'Sample Sent'
+            ? 'bg-amber-50/70 border-amber-300 ring-2 ring-amber-500/20 shadow-xs'
+            : 'bg-white border-slate-200/90 hover:border-slate-300 shadow-xs'
+            }`}
         >
           <div className="text-[11px] font-semibold text-amber-700 flex items-center justify-between">
             <span>Sample Sent</span>
@@ -435,11 +432,10 @@ export const AddLead: React.FC<AddLeadProps> = ({
 
         <button
           onClick={() => setStageFilter('Existing Client')}
-          className={`p-4 rounded-2xl border text-left transition ${
-            stageFilter === 'Existing Client'
-              ? 'bg-emerald-50/70 border-emerald-300 ring-2 ring-emerald-500/20 shadow-xs'
-              : 'bg-white border-slate-200/90 hover:border-slate-300 shadow-xs'
-          }`}
+          className={`p-4 rounded-2xl border text-left transition ${stageFilter === 'Existing Client'
+            ? 'bg-emerald-50/70 border-emerald-300 ring-2 ring-emerald-500/20 shadow-xs'
+            : 'bg-white border-slate-200/90 hover:border-slate-300 shadow-xs'
+            }`}
         >
           <div className="text-[11px] font-semibold text-emerald-700 flex items-center justify-between">
             <span>Existing Client</span>
@@ -451,11 +447,10 @@ export const AddLead: React.FC<AddLeadProps> = ({
 
         <button
           onClick={() => setBottleFilter(bottleFilter === 'GLASS' ? 'ALL' : 'GLASS')}
-          className={`p-4 rounded-2xl border text-left transition ${
-            bottleFilter === 'GLASS'
-              ? 'bg-purple-50/70 border-purple-300 ring-2 ring-purple-500/20 shadow-xs'
-              : 'bg-white border-slate-200/90 hover:border-slate-300 shadow-xs'
-          }`}
+          className={`p-4 rounded-2xl border text-left transition ${bottleFilter === 'GLASS'
+            ? 'bg-purple-50/70 border-purple-300 ring-2 ring-purple-500/20 shadow-xs'
+            : 'bg-white border-slate-200/90 hover:border-slate-300 shadow-xs'
+            }`}
         >
           <div className="text-[11px] font-semibold text-purple-700 flex items-center justify-between">
             <span>Glass Targets</span>
@@ -467,82 +462,79 @@ export const AddLead: React.FC<AddLeadProps> = ({
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-xs flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
-        {/* Search input */}
-        <div className="relative flex-1">
+      <div className="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-xs flex flex-col gap-3">
+        {/* Row 1: Search */}
+        <div className="relative w-full">
+          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search leads by company name, city, contact person, phone, email, notes, brand..."
-            className="w-full pl-9 pr-4 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary text-slate-800"
+            className="w-full pl-9 pr-16 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary text-slate-800"
           />
-          <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-3" />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              className="absolute right-3 top-2.5 text-xs text-slate-400 hover:text-slate-600"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 hover:text-slate-600"
             >
               Clear
             </button>
           )}
         </div>
 
-        {/* Filter Pills */}
-        <div className="flex flex-wrap items-center gap-1.5 overflow-x-auto text-xs">
-          <span className="text-[11px] font-semibold text-slate-400 mr-1">
-            Stage:
-          </span>
-          {(
-            [
-              'ALL',
-              'In Discussion',
-              'Sample Sent',
-              'Existing Client',
-              'Not Contacted',
-              'Not Interested',
-            ] as StageFilter[]
-          ).map((stage) => (
-            <button
-              key={stage}
-              onClick={() => setStageFilter(stage)}
-              className={`px-3 py-1.5 rounded-xl font-semibold transition-colors ${
-                stageFilter === stage
-                  ? 'bg-primary text-white shadow-xs'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-              }`}
-            >
-              {stage === 'ALL' ? 'All Stages' : stage}
-            </button>
-          ))}
-        </div>
+        {/* Row 2: Filters */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+          {/* Stage pills */}
+          <div className="flex flex-wrap items-center gap-1.5 text-xs min-w-0">
+            <span className="text-[11px] font-semibold text-slate-400 mr-1">Stage:</span>
+            {(
+              [
+                'ALL',
+                'In Discussion',
+                'Sample Sent',
+                'Existing Client',
+                'Not Contacted',
+                'Not Interested',
+              ] as StageFilter[]
+            ).map((stage) => (
+              <button
+                key={stage}
+                onClick={() => setStageFilter(stage)}
+                className={`px-3 py-1.5 rounded-xl font-semibold transition-colors ${stageFilter === stage
+                    ? 'bg-primary text-white shadow-xs'
+                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  }`}
+              >
+                {stage === 'ALL' ? 'All Stages' : stage}
+              </button>
+            ))}
+          </div>
 
-        {/* Bottle Type filter */}
-        <div className="flex items-center gap-1 text-xs shrink-0 border-l border-slate-200 pl-3">
-          <button
-            onClick={() => setBottleFilter('ALL')}
-            className={`px-2.5 py-1 rounded-lg font-semibold ${
-              bottleFilter === 'ALL' ? 'bg-slate-800 text-white' : 'text-slate-500 hover:text-slate-800'
-            }`}
-          >
-            All Plants
-          </button>
-          <button
-            onClick={() => setBottleFilter('GLASS')}
-            className={`px-2.5 py-1 rounded-lg font-semibold ${
-              bottleFilter === 'GLASS' ? 'bg-purple-700 text-white' : 'text-slate-500 hover:text-slate-800'
-            }`}
-          >
-            Glass Plants
-          </button>
-          <button
-            onClick={() => setBottleFilter('PLASTIC')}
-            className={`px-2.5 py-1 rounded-lg font-semibold ${
-              bottleFilter === 'PLASTIC' ? 'bg-blue-700 text-white' : 'text-slate-500 hover:text-slate-800'
-            }`}
-          >
-            Plastic BFS
-          </button>
+          {/* Plant type toggle */}
+          <div className="flex items-center gap-1 text-xs shrink-0 lg:border-l lg:border-slate-200 lg:pl-3">
+            <button
+              onClick={() => setBottleFilter('ALL')}
+              className={`px-2.5 py-1.5 rounded-lg font-semibold transition-colors ${bottleFilter === 'ALL' ? 'bg-slate-800 text-white' : 'text-slate-500 hover:text-slate-800'
+                }`}
+            >
+              All Plants
+            </button>
+            <button
+              onClick={() => setBottleFilter('GLASS')}
+              className={`px-2.5 py-1.5 rounded-lg font-semibold transition-colors ${bottleFilter === 'GLASS' ? 'bg-purple-700 text-white' : 'text-slate-500 hover:text-slate-800'
+                }`}
+            >
+              Glass Plants
+            </button>
+            <button
+              onClick={() => setBottleFilter('PLASTIC')}
+              className={`px-2.5 py-1.5 rounded-lg font-semibold transition-colors ${bottleFilter === 'PLASTIC' ? 'bg-blue-700 text-white' : 'text-slate-500 hover:text-slate-800'
+                }`}
+            >
+              Plastic BFS
+            </button>
+          </div>
         </div>
       </div>
 
@@ -556,8 +548,8 @@ export const AddLead: React.FC<AddLeadProps> = ({
                 <th className="px-3 py-3.5 min-w-[150px] text-center">Packaging Profile</th>
                 <th className="px-4 py-3.5 min-w-[170px]">Key Brands</th>
                 <th className="px-4 py-3.5 w-44">Outreach Stage</th>
-                <th className="px-4 py-3.5 min-w-[200px]">Key Contact</th>
-                <th className="px-4 py-3.5 min-w-[240px]">Pitch Notes</th>
+                {/* <th className="px-4 py-3.5 min-w-[200px]">Key Contact</th> */}
+                {/* <th className="px-4 py-3.5 min-w-[240px]">Pitch Notes</th> */}
                 <th className="px-3 py-3.5 w-28 text-center">Actions</th>
               </tr>
             </thead>
@@ -684,7 +676,7 @@ export const AddLead: React.FC<AddLeadProps> = ({
                       </td>
 
                       {/* Key Contact */}
-                      <td className="px-4 py-3.5">
+                      {/* <td className="px-4 py-3.5">
                         <div className="font-semibold text-slate-800">
                           {lead.contactPerson || (
                             <span className="text-slate-300 font-normal italic">
@@ -732,10 +724,10 @@ export const AddLead: React.FC<AddLeadProps> = ({
                             </a>
                           )}
                         </div>
-                      </td>
+                      </td> */}
 
                       {/* Pitch Notes */}
-                      <td className="px-4 py-3.5">
+                      {/* <td className="px-4 py-3.5">
                         {lead.notes ? (
                           <p
                             className="text-[11px] text-slate-600 line-clamp-2 leading-relaxed"
@@ -748,7 +740,7 @@ export const AddLead: React.FC<AddLeadProps> = ({
                             No notes added yet
                           </span>
                         )}
-                      </td>
+                      </td> */}
 
                       {/* Actions */}
                       <td className="px-3 py-3.5 text-center" onClick={(e) => e.stopPropagation()}>
@@ -822,275 +814,274 @@ export const AddLead: React.FC<AddLeadProps> = ({
             style={{ height: '100vh', width: '100vw' }}
           >
             <div className="bg-white rounded-3xl shadow-2xl border border-slate-200 w-full max-w-xl overflow-hidden motion-sheet">
-            {/* Modal Header */}
-            <div className="p-5 sm:p-6 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-blue-100 text-primary flex items-center justify-center font-semibold">
-                  <Building2 className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="text-base sm:text-lg font-semibold text-slate-900">
-                    {modalMode === 'create' ? 'Add New Lead' : 'Edit Lead Details'}
-                  </h3>
-                  <p className="text-xs text-slate-500">
-                    Synchronized across Master Table View, Lead Drawer, and Company Directory
-                  </p>
-                </div>
-              </div>
-
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-200 rounded-xl transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Modal Form */}
-            <form onSubmit={handleSaveLead} className="p-5 sm:p-6 space-y-4 text-xs">
-              {/* Company Selection / Auto-Suggest */}
-              <div>
-                <label className="text-[11px] font-semibold text-slate-700 block mb-1.5">
-                  Target Pharmaceutical Company <span className="text-rose-500">*</span>
-                </label>
-
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={companySearchTerm}
-                    onChange={(e) => {
-                      setCompanySearchTerm(e.target.value);
-                      setFormData({ ...formData, companyName: e.target.value });
-                      setIsCompanyDropdownOpen(true);
-                    }}
-                    onFocus={() => setIsCompanyDropdownOpen(true)}
-                    placeholder="Search manufacturer name (e.g. Bosch, Otsuka, Pacific, Medipak)..."
-                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
-                  />
-                  <Search className="w-3.5 h-3.5 text-slate-400 absolute right-3.5 top-3.5 pointer-events-none" />
-
-                  {/* Autocomplete Dropdown */}
-                  {isCompanyDropdownOpen && (
-                    <div className="motion-pop absolute top-full left-0 right-0 mt-1 bg-white border border-slate-200 rounded-xl shadow-lg max-h-56 overflow-y-auto z-50 divide-y divide-slate-100">
-                      {filteredCompanyOptions.map((c) => (
-                        <div
-                          key={c.name}
-                          onClick={() => handleSelectCompany(c)}
-                          className="p-2.5 hover:bg-blue-50 cursor-pointer flex items-center justify-between gap-2 transition-colors"
-                        >
-                          <div>
-                            <div className="font-semibold text-slate-900 flex items-center gap-1.5">
-                              <Building2 className="w-3.5 h-3.5 text-primary" />
-                              <span>{c.name}</span>
-                            </div>
-                            <div className="text-[11px] text-slate-500">
-                              {c.city || 'Pakistan'} • {c.totalProducts} IV Formulations
-                            </div>
-                          </div>
-                          <div>
-                            {c.glassCount > 0 ? (
-                              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold badge-glass">
-                                {c.glassCount} Glass Target
-                              </span>
-                            ) : (
-                              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold badge-plastic">
-                                BFS Plastic
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Selected Target Summary Box */}
-              {selectedCompanySummary && (
-                <div className="p-3 bg-blue-50/70 rounded-xl border border-blue-100 flex items-center justify-between">
-                  <div>
-                    <div className="font-semibold text-blue-900 text-xs">
-                      {selectedCompanySummary.name}
-                    </div>
-                    <div className="text-[11px] text-blue-700 mt-0.5">
-                      {selectedCompanySummary.city || 'Pakistan'} • {selectedCompanySummary.totalProducts} IV Formulations • Brands: {selectedCompanySummary.brands.slice(0, 3).join(', ')}
-                    </div>
+              {/* Modal Header */}
+              <div className="p-5 sm:p-6 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl bg-blue-100 text-primary flex items-center justify-center font-semibold">
+                    <Building2 className="w-5 h-5" />
                   </div>
                   <div>
-                    {selectedCompanySummary.glassCount > 0 ? (
-                      <span className="px-2.5 py-1 rounded-full text-xs font-semibold badge-glass">
-                        {selectedCompanySummary.glassCount} Glass (Hanger Target)
-                      </span>
-                    ) : (
-                      <span className="px-2.5 py-1 rounded-full text-xs font-semibold badge-plastic">
-                        Plastic BFS Only
-                      </span>
+                    <h3 className="text-base sm:text-lg font-semibold text-slate-900">
+                      {modalMode === 'create' ? 'Add New Lead' : 'Edit Lead Details'}
+                    </h3>
+                    <p className="text-xs text-slate-500">
+                      Synchronized across Master Table View, Lead Drawer, and Company Directory
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => setIsModalOpen(false)}
+                  className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-200 rounded-xl transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Modal Form */}
+              <form onSubmit={handleSaveLead} className="p-5 sm:p-6 space-y-4 text-xs">
+                {/* Company Selection / Auto-Suggest */}
+                <div>
+                  <label className="text-[11px] font-semibold text-slate-700 block mb-1.5">
+                    Target Pharmaceutical Company <span className="text-rose-500">*</span>
+                  </label>
+
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={companySearchTerm}
+                      onChange={(e) => {
+                        setCompanySearchTerm(e.target.value);
+                        setFormData({ ...formData, companyName: e.target.value });
+                        setIsCompanyDropdownOpen(true);
+                      }}
+                      onFocus={() => setIsCompanyDropdownOpen(true)}
+                      placeholder="Search manufacturer name (e.g. Bosch, Otsuka, Pacific, Medipak)..."
+                      className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+                    />
+                    <Search className="w-3.5 h-3.5 text-slate-400 absolute right-3.5 top-3.5 pointer-events-none" />
+
+                    {/* Autocomplete Dropdown */}
+                    {isCompanyDropdownOpen && (
+                      <div className="motion-pop absolute top-full left-0 right-0 mt-1 bg-white border border-slate-200 rounded-xl shadow-lg max-h-56 overflow-y-auto z-50 divide-y divide-slate-100">
+                        {filteredCompanyOptions.map((c) => (
+                          <div
+                            key={c.name}
+                            onClick={() => handleSelectCompany(c)}
+                            className="p-2.5 hover:bg-blue-50 cursor-pointer flex items-center justify-between gap-2 transition-colors"
+                          >
+                            <div>
+                              <div className="font-semibold text-slate-900 flex items-center gap-1.5">
+                                <Building2 className="w-3.5 h-3.5 text-primary" />
+                                <span>{c.name}</span>
+                              </div>
+                              <div className="text-[11px] text-slate-500">
+                                {c.city || 'Pakistan'} • {c.totalProducts} IV Formulations
+                              </div>
+                            </div>
+                            <div>
+                              {c.glassCount > 0 ? (
+                                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold badge-glass">
+                                  {c.glassCount} Glass Target
+                                </span>
+                              ) : (
+                                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold badge-plastic">
+                                  BFS Plastic
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     )}
                   </div>
                 </div>
-              )}
 
-              {/* Outreach Stage & City */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                {/* Selected Target Summary Box */}
+                {selectedCompanySummary && (
+                  <div className="p-3 bg-blue-50/70 rounded-xl border border-blue-100 flex items-center justify-between">
+                    <div>
+                      <div className="font-semibold text-blue-900 text-xs">
+                        {selectedCompanySummary.name}
+                      </div>
+                      <div className="text-[11px] text-blue-700 mt-0.5">
+                        {selectedCompanySummary.city || 'Pakistan'} • {selectedCompanySummary.totalProducts} IV Formulations • Brands: {selectedCompanySummary.brands.slice(0, 3).join(', ')}
+                      </div>
+                    </div>
+                    <div>
+                      {selectedCompanySummary.glassCount > 0 ? (
+                        <span className="px-2.5 py-1 rounded-full text-xs font-semibold badge-glass">
+                          {selectedCompanySummary.glassCount} Glass (Hanger Target)
+                        </span>
+                      ) : (
+                        <span className="px-2.5 py-1 rounded-full text-xs font-semibold badge-plastic">
+                          Plastic BFS Only
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Outreach Stage & City */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  <div>
+                    <label className="text-[11px] font-semibold text-slate-700 block mb-1">
+                      Outreach Stage <span className="text-rose-500">*</span>
+                    </label>
+                    <select
+                      value={formData.status}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          status: e.target.value as CompanyLead['status'],
+                        })
+                      }
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                    >
+                      <option value="Not Contacted">Not Contacted</option>
+                      <option value="In Discussion">In Discussion</option>
+                      <option value="Sample Sent">Sample Sent / Testing</option>
+                      <option value="Existing Client">Existing Client</option>
+                      <option value="Not Interested">Not Interested</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] font-semibold text-slate-700 block mb-1">
+                      Manufacturing City / Plant Location
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.city}
+                      onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                      placeholder="e.g. Karachi / Lahore / Hattar"
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                    />
+                  </div>
+                </div>
+
+                {/* Key Contact Person & Title */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  <div>
+                    <label className="text-[11px] font-semibold text-slate-700 block mb-1">
+                      Key Contact Person
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.contactPerson}
+                      onChange={(e) => setFormData({ ...formData, contactPerson: e.target.value })}
+                      placeholder="e.g. Dr. Aftab / Mr. Tariq Khan"
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] font-semibold text-slate-700 block mb-1">
+                      Title / Department
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.title}
+                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                      placeholder="e.g. Head of Procurement / Plant Manager"
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                    />
+                  </div>
+                </div>
+
+                {/* Phone, Email & LinkedIn */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div>
+                    <label className="text-[11px] font-semibold text-slate-700 block mb-1 flex items-center gap-1">
+                      <Phone className="w-3 h-3 text-slate-400" />
+                      <span>Phone / WhatsApp</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      placeholder="e.g. +92 300 1234567"
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] font-semibold text-slate-700 block mb-1 flex items-center gap-1">
+                      <Mail className="w-3 h-3 text-slate-400" />
+                      <span>Email Address</span>
+                    </label>
+                    <input
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      placeholder="e.g. procurement@pharma.pk"
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] font-semibold text-slate-700 block mb-1 flex items-center gap-1">
+                      <Linkedin className="w-3 h-3 text-slate-400" />
+                      <span>LinkedIn Profile</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.linkedin}
+                      onChange={(e) => setFormData({ ...formData, linkedin: e.target.value })}
+                      placeholder="e.g. linkedin.com/in/..."
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                    />
+                  </div>
+                </div>
+
+                {/* Private Outreach & Pitch Notes */}
                 <div>
                   <label className="text-[11px] font-semibold text-slate-700 block mb-1">
-                    Outreach Stage <span className="text-rose-500">*</span>
+                    Private Outreach &amp; Pitch Notes
                   </label>
-                  <select
-                    value={formData.status}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        status: e.target.value as CompanyLead['status'],
-                      })
-                    }
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                  <textarea
+                    rows={3}
+                    value={formData.notes}
+                    onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                    placeholder="Enter meeting logs, hanger label sample shipments, plant requirements, target volumes, pricing..."
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                  />
+                </div>
+
+                {/* Footer Buttons */}
+                <div className="flex items-center justify-between pt-3 border-t border-slate-100">
+                  <button
+                    type="button"
+                    onClick={() => setIsModalOpen(false)}
+                    className="px-4 py-2 font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
                   >
-                    <option value="Not Contacted">Not Contacted</option>
-                    <option value="In Discussion">In Discussion</option>
-                    <option value="Sample Sent">Sample Sent / Testing</option>
-                    <option value="Existing Client">Existing Client</option>
-                    <option value="Not Interested">Not Interested</option>
-                  </select>
+                    Cancel
+                  </button>
+
+                  <button
+                    type="submit"
+                    disabled={saveSuccess}
+                    className={`inline-flex items-center gap-1.5 px-5 py-2 font-semibold rounded-xl text-white transition shadow-sm ${saveSuccess ? 'bg-emerald-600' : 'bg-primary hover:bg-primary-hover'
+                      }`}
+                  >
+                    {saveSuccess ? (
+                      <>
+                        <Check className="w-4 h-4" />
+                        <span>Lead Saved &amp; Synced!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Save className="w-4 h-4" />
+                        <span>{modalMode === 'create' ? 'Add Lead' : 'Save Changes'}</span>
+                      </>
+                    )}
+                  </button>
                 </div>
-
-                <div>
-                  <label className="text-[11px] font-semibold text-slate-700 block mb-1">
-                    Manufacturing City / Plant Location
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.city}
-                    onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                    placeholder="e.g. Karachi / Lahore / Hattar"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/30"
-                  />
-                </div>
-              </div>
-
-              {/* Key Contact Person & Title */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                <div>
-                  <label className="text-[11px] font-semibold text-slate-700 block mb-1">
-                    Key Contact Person
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.contactPerson}
-                    onChange={(e) => setFormData({ ...formData, contactPerson: e.target.value })}
-                    placeholder="e.g. Dr. Aftab / Mr. Tariq Khan"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/30"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-[11px] font-semibold text-slate-700 block mb-1">
-                    Title / Department
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    placeholder="e.g. Head of Procurement / Plant Manager"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/30"
-                  />
-                </div>
-              </div>
-
-              {/* Phone, Email & LinkedIn */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div>
-                  <label className="text-[11px] font-semibold text-slate-700 block mb-1 flex items-center gap-1">
-                    <Phone className="w-3 h-3 text-slate-400" />
-                    <span>Phone / WhatsApp</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    placeholder="e.g. +92 300 1234567"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/30"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-[11px] font-semibold text-slate-700 block mb-1 flex items-center gap-1">
-                    <Mail className="w-3 h-3 text-slate-400" />
-                    <span>Email Address</span>
-                  </label>
-                  <input
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    placeholder="e.g. procurement@pharma.pk"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/30"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-[11px] font-semibold text-slate-700 block mb-1 flex items-center gap-1">
-                    <Linkedin className="w-3 h-3 text-slate-400" />
-                    <span>LinkedIn Profile</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.linkedin}
-                    onChange={(e) => setFormData({ ...formData, linkedin: e.target.value })}
-                    placeholder="e.g. linkedin.com/in/..."
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/30"
-                  />
-                </div>
-              </div>
-
-              {/* Private Outreach & Pitch Notes */}
-              <div>
-                <label className="text-[11px] font-semibold text-slate-700 block mb-1">
-                  Private Outreach &amp; Pitch Notes
-                </label>
-                <textarea
-                  rows={3}
-                  value={formData.notes}
-                  onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                  placeholder="Enter meeting logs, hanger label sample shipments, plant requirements, target volumes, pricing..."
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/30"
-                />
-              </div>
-
-              {/* Footer Buttons */}
-              <div className="flex items-center justify-between pt-3 border-t border-slate-100">
-                <button
-                  type="button"
-                  onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
-                >
-                  Cancel
-                </button>
-
-                <button
-                  type="submit"
-                  disabled={saveSuccess}
-                  className={`inline-flex items-center gap-1.5 px-5 py-2 font-semibold rounded-xl text-white transition shadow-sm ${
-                    saveSuccess ? 'bg-emerald-600' : 'bg-primary hover:bg-primary-hover'
-                  }`}
-                >
-                  {saveSuccess ? (
-                    <>
-                      <Check className="w-4 h-4" />
-                      <span>Lead Saved &amp; Synced!</span>
-                    </>
-                  ) : (
-                    <>
-                      <Save className="w-4 h-4" />
-                      <span>{modalMode === 'create' ? 'Add Lead' : 'Save Changes'}</span>
-                    </>
-                  )}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>,
-        document.body
-      )}
+              </form>
+            </div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 };
