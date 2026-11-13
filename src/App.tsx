@@ -19,7 +19,7 @@ import { NicheWiseView } from './components/NicheWiseView';
 import { CompanyDirectoryView } from './components/CompanyDirectoryView';
 import { TableView } from './components/TableView';
 import { AnalyticsView } from './components/AnalyticsView';
-import { LeadsView } from './components/LeadsView';
+import { AddLead } from './components/addLead';
 import { ProductDetailModal } from './components/ProductDetailModal';
 import { CompanyDetailModal } from './components/CompanyDetailModal';
 import { getStoredCompanyLeads, getStoredOutreachRecords, subscribeToCompanyLeadUpdates } from './utils/crmStorage';
@@ -238,7 +238,7 @@ export const App: React.FC = () => {
             )}
 
             {activeTab === 'leads' && (
-              <LeadsView
+              <AddLead
                 companies={allCompanies}
                 onSelectCompany={setSelectedCompany}
                 onFilterByCompany={handleFilterByCompany}
