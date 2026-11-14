@@ -1,4 +1,4 @@
-import { CompanyLead, OutreachRecord, CompanyContact } from '../types';
+import { CompanyLead, OutreachRecord, CompanyContact, LeadTask, LeadTaskType, LeadTaskStatus } from '../types';
 
 const COMPANY_LEADS_KEY = 'pak_iv_company_leads_v2';
 const COMPANY_CONTACTS_KEY = 'pak_iv_company_contacts_v1';
@@ -6,6 +6,7 @@ const CRM_STORAGE_KEY = 'pak_iv_crm_outreach_data_v1';
 
 export const COMPANY_LEAD_UPDATE_EVENT = 'iv_crm_company_lead_updated';
 export const OUTREACH_UPDATE_EVENT = 'iv_crm_outreach_updated';
+export const TASKS_UPDATE_EVENT = 'iv_crm_tasks_updated';
 
 const DEFAULT_INITIAL_COMPANY_LEADS: Record<string, CompanyLead> = {
   'Bosch Pharmaceuticals (Pvt) Ltd': {
@@ -339,4 +340,97 @@ export function formatProductForClipboard(product: {
     `DRAP Reg: ${product.drap_reg || 'N/A'}`,
     `Notes: ${product.notes}`
   ].join('\n');
+}
+
+/* ── Lead Tasks Storage ── */
+
+export interface StoredCalendarTask extends LeadTask {
+  companyName: string;
+}
+
+export function getCompanyTasks(companyName: string): LeadTask[] {
+  if (!companyName) return [];
+  try {
+    const raw = localStorage.getItem(`iv_lead_tasks_${companyName.trim().toLowerCase()}`);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.map((t: any) => ({
+      id: t.id || Date.now().toString(),
+      title: t.title || t.text || 'Follow up task',
+      type: (t.type as LeadTaskType) || 'Follow Up',
+      status: (t.status as LeadTaskStatus) || (t.done ? 'Closed' : 'Todo'),
+      dueDate: t.dueDate || undefined,
+      notes: t.notes || undefined,
+      createdAt: t.createdAt || new Date().toISOString(),
+    }));
+  } catch {
+    return [];
+  }
+}
+
+export function saveCompanyTasks(companyName: string, tasks: LeadTask[]) {
+  if (!companyName) return;
+  try {
+    localStorage.setItem(
+      `iv_lead_tasks_${companyName.trim().toLowerCase()}`,
+      JSON.stringify(tasks)
+    );
+    window.dispatchEvent(new CustomEvent(TASKS_UPDATE_EVENT, { detail: { companyName } }));
+  } catch (e) {
+    console.error('Failed to save tasks', e);
+  }
+}
+
+export function getAllCompanyTasks(): StoredCalendarTask[] {
+  const leads = getStoredCompanyLeads();
+  const allTasks: StoredCalendarTask[] = [];
+  const companyKeys = new Set<string>();
+
+  Object.keys(leads).forEach((c) => companyKeys.add(c.trim().toLowerCase()));
+
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key && key.startsWith('iv_lead_tasks_')) {
+      const companyKey = key.replace('iv_lead_tasks_', '');
+      companyKeys.add(companyKey);
+    }
+  }
+
+  companyKeys.forEach((compKey) => {
+    try {
+      const raw = localStorage.getItem(`iv_lead_tasks_${compKey}`);
+      if (raw) {
+        const tasks: any[] = JSON.parse(raw);
+        if (Array.isArray(tasks)) {
+          const canonicalName =
+            Object.keys(leads).find((k) => k.trim().toLowerCase() === compKey) || compKey;
+          tasks.forEach((t) => {
+            allTasks.push({
+              id: t.id || Date.now().toString(),
+              title: t.title || t.text || 'Task',
+              type: (t.type as LeadTaskType) || 'Follow Up',
+              status: (t.status as LeadTaskStatus) || (t.done ? 'Closed' : 'Todo'),
+              dueDate: t.dueDate || undefined,
+              notes: t.notes || undefined,
+              createdAt: t.createdAt || new Date().toISOString(),
+              companyName: canonicalName,
+            });
+          });
+        }
+      }
+    } catch {}
+  });
+
+  return allTasks;
+}
+
+export function subscribeToTasksUpdates(callback: () => void): () => void {
+  const handler = () => callback();
+  window.addEventListener(TASKS_UPDATE_EVENT, handler);
+  window.addEventListener('storage', handler);
+  return () => {
+    window.removeEventListener(TASKS_UPDATE_EVENT, handler);
+    window.removeEventListener('storage', handler);
+  };
 }

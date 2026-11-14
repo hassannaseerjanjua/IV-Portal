@@ -7,6 +7,7 @@ import {
   TableProperties,
   BarChart3,
   UserCheck,
+  CalendarDays,
   X,
   PanelLeftClose,
   PanelLeftOpen,
@@ -33,6 +34,7 @@ const NAV_ITEMS: { id: ViewTab; label: string; icon: React.ElementType }[] = [
   { id: 'companies', label: 'Companies Directory', icon: Building2 },
   { id: 'table', label: 'Master Table', icon: TableProperties },
   { id: 'leads', label: 'Leads & CRM', icon: UserCheck },
+  { id: 'calendar', label: 'Task Calendar', icon: CalendarDays },
   { id: 'analytics', label: 'Analytics & Insights', icon: BarChart3 },
 ];
 

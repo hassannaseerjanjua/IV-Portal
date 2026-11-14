@@ -45,3 +45,6 @@ coverage/
 
 # Miscellaneous
 *.local
+
+# yarn
+yarn.lock
